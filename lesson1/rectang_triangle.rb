@@ -11,9 +11,7 @@ c_side = gets.chomp.to_f
 
 if a_side == b_side && a_side == c_side
   puts "it is an equilateral and isosceles triangle."
-end
-
-if a_side > b_side && a_side > c_side
+elsif a_side > b_side && a_side > c_side
   hypotenuse = a_side
   cathetus_one = b_side
   cathetus_two = c_side
@@ -31,7 +29,9 @@ end
 
 if hypotenuse && hypotenuse**2 == cathetus_one**2 + cathetus_two**2
   puts "It is a rectangular triangle."
-  if a_side == b_side || a_side == c_side || b_side == c_side
-    puts "it is an isosceles triangle."
-  end
+  is_rect = true
+end
+
+if is_rect && cathetus_one == cathetus_two
+  puts "it is an isosceles triangle."
 end

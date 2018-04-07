@@ -1,7 +1,7 @@
 purchase_hash = {}
 total_purchase_price = 0
 
-while true
+loop do
   puts "Please enter the name of the product: "
   product_name = gets.chomp.to_s
   break if product_name == "stop"
@@ -14,8 +14,8 @@ end
 
 puts purchase_hash
 
-purchase_hash.each do |key,value|
-  total_price = value[:price]*value[:number]
+purchase_hash.each do |key, value|
+  total_price = value[:price] * value[:number]
   puts "#{key} is #{total_price}"
   total_purchase_price += total_price
 end

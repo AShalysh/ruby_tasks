@@ -1,7 +1,5 @@
 class Station
-
-  attr_reader :name
-  attr_accessor :trains
+  attr_reader :name, :trains
 
   def initialize(name)
     @name = name
@@ -32,18 +30,19 @@ class Station
     end
   end
 
-  def by_type
-    counter_cargo = 0
-    counter_pass = 0
-    @trains.sort{|x, y| x.type <=> y.type }.each do |train|
-      counter_cargo += 1 if train.type == "cargo"
-      counter_pass +=1 if train.type == "pass"
-      puts "Cargo train: #{train}" if train.type == "cargo"
-      puts "Passanger train: #{train}" if train.type == "pass"
-    end
-    puts "The number of cargo trains is #{counter_cargo}"
-    puts "The number of passanger trains is #{counter_pass}"
+  def by_type_cargo
+    @trains.select { |tr| tr.type == "cargo"}
   end
 
-end
+  def by_type_pass
+    @trains.select { |tr| tr.type == "pass"}
+  end
 
+  def num_cargo
+    by_type_cargo.count
+  end
+
+  def num_pass
+    by_type_pass.count
+  end
+end

@@ -1,7 +1,7 @@
 class Route
   attr_reader :first_station, :last_station, :station_list
-  
-  def initialize(first_station = Station.new("A"), last_station = Station.new("Z"))
+
+  def initialize(first_station, last_station)
     @station_list = [first_station, last_station]
   end
 
@@ -24,8 +24,6 @@ class Route
   end
 
   def display_all_stations
-    @station_list.each do |station|
-      puts "#{station.name} "
-    end
+    @station_list.each { |station| puts "#{station.name}" }
   end
 end

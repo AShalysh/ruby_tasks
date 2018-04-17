@@ -9,7 +9,6 @@ class Station
   def arrival(train)
     if !@trains.include?(train)
       @trains << train
-      train.current_station = self
     else
       puts "Train is already on the station."
     end
@@ -24,25 +23,11 @@ class Station
     end
   end
 
-  def current_trains
-    @trains.each do |train|
-      puts "#{train} "
-    end
+  def by_type(train_type)
+    @trains.select { |train| train.type == train_type}
   end
 
-  def by_type_cargo
-    @trains.select { |tr| tr.type == "cargo"}
-  end
-
-  def by_type_pass
-    @trains.select { |tr| tr.type == "pass"}
-  end
-
-  def num_cargo
-    by_type_cargo.count
-  end
-
-  def num_pass
-    by_type_pass.count
+  def number_by_type(train_type)
+    by_type.count
   end
 end

@@ -6,15 +6,12 @@ class Train
     @type = type
     @carriage_num = carriage_num
     @speed = 0
+    @current_station_index = 0
     @current_station = 0
   end
 
   def increase_speed(value)
     @speed += value
-  end
-
-  def current_speed
-    @speed
   end
 
   def decrease_speed(value)
@@ -23,10 +20,6 @@ class Train
     else   
       @speed -= value
     end
-  end
-#это же значение будет возвращать reader :carriage_num
-  def total_carriage_num
-    @carriage_num
   end
 
   def add_carriage
@@ -49,39 +42,42 @@ class Train
 
   def set_route(route)
     @route = route
-  end
-
-  def train_route
-    @current_station = @route.station_list[0]
+    @current_station = @route.station_list[@current_station_index]
   end
 
   def go_to_next_station
-    next_station_position = @route.station_list.index(@current_station) + 1
-    next_station = @route.station_list[next_station_position]
-    @current_station.departure(self)
-    next_station.arrival(next_station)
-    @current_station = next_station
+    if @current_station != @route.station_list[-1]
+      @current_station_index += 1
+      @current_station = @route.station_list[@current_station_index]
+    else
+      puts "You are on the last station."
+    end
   end
  
   def go_to_prev_station
-    previous_station_position = @route.station_list.index(@current_station) - 1
-    previous_station = @route.station_list[previous_station_position]
-    @current_station.departure(self)
-    previous_station.arrival(previous_station)
-    @current_station = previous_station
-  end
-
-  def current_station
-    @current_station
+    if @current_station != @route.station_list[0]
+      @current_station_index -= 1
+      @current_station = @route.station_list[@current_station_index]
+    else
+      puts "You are on the first station."
+    end
   end
 
   def prev_station
-    previous_station_position = @route.station_list.index(@current_station) - 1
-    previous_station = @route.station_list[previous_station_position]
+    if @current_station != @route.station_list[0]
+      previous_station_position = @route.station_list.index(@current_station) - 1
+      @route.station_list[previous_station_position]
+    else 
+      puts "There is no previous station."
+    end
   end
 
   def next_station
-    next_station_position = @route.station_list.index(@current_station) + 1
-    next_station = @route.station_list[next_station_position]
+    if @current_station != @route.station_list[-1]
+      next_station_position = @route.station_list.index(@current_station) + 1
+      @route.station_list[next_station_position]
+    else
+      puts "There is no next station."
+    end
   end
 end

@@ -24,10 +24,10 @@ class Station
   end
 
   def by_type(train_type)
-    @trains.select { |train| train.type == train_type}
+    @trains.select { |train| train.type == train_type }
   end
 
   def number_by_type(train_type)
-    by_type.count
+    by_type(train_type).count
   end
 end

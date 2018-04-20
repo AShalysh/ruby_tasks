@@ -6,7 +6,6 @@ class Train
     @type = type
     @carriage_num = carriage_num
     @speed = 0
-    @current_station_index = 0
     @current_station = 0
   end
 
@@ -42,40 +41,53 @@ class Train
 
   def set_route(route)
     @route = route
-    @current_station = @route.station_list[@current_station_index]
+    @current_station = @route.first_station
+    set_arrival
+  end
+
+  def set_arrival
+    @current_station.arrival(self)
+  end
+
+  def set_departure
+    @current_station.departure(self)
+  end
+
+  def current_station_index
+    @route.station_list.index(@current_station)
   end
 
   def go_to_next_station
-    if @current_station != @route.station_list[-1]
-      @current_station_index += 1
-      @current_station = @route.station_list[@current_station_index]
+    if @current_station != @route.last_station
+      set_departure
+      @current_station = next_station
+      set_arrival
     else
       puts "You are on the last station."
     end
   end
  
   def go_to_prev_station
-    if @current_station != @route.station_list[0]
-      @current_station_index -= 1
-      @current_station = @route.station_list[@current_station_index]
+    if @current_station != @route.first_station
+      set_departure
+      @current_station = prev_station
+      set_arrival
     else
       puts "You are on the first station."
     end
   end
 
   def prev_station
-    if @current_station != @route.station_list[0]
-      previous_station_position = @route.station_list.index(@current_station) - 1
-      @route.station_list[previous_station_position]
+    if @current_station != @route.first_station
+      @route.station_list[current_station_index - 1]
     else 
       puts "There is no previous station."
     end
   end
 
   def next_station
-    if @current_station != @route.station_list[-1]
-      next_station_position = @route.station_list.index(@current_station) + 1
-      @route.station_list[next_station_position]
+    if @current_station != @route.last_station
+      @route.station_list[current_station_index + 1]
     else
       puts "There is no next station."
     end

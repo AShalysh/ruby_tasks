@@ -18,8 +18,7 @@ class Station
     if !@trains.include?(train)
       puts "Train is not on the station."
     else
-      @trains.delete(train)
-      puts "Train was deleted."    
+      @trains.delete(train)   
     end
   end
 

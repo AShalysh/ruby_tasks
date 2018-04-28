@@ -22,14 +22,21 @@ class Route
     end
   end
 
-  def delete_station(station)
-    if @station_list.include?(station) && (station != first_station || station != last_station)
+  def delete_station(station_name)
+    station = get_station_by_name(station_name)
+    if station && (station.name != first_station.name || station.name != last_station.name)
       @station_list.delete(station)
-      puts "#{station} was deleted."
+      puts "#{station.name} was deleted."
     else
       puts "Station is not found or it is a first/last one!"  
     end
   end
+
+  def get_station_by_name(name)
+    @station_list.each do |station|
+      return station if station.name == name
+    end  
+  end  
 
   def display_all_stations
     @station_list.each { |station| puts "#{station.name}" }

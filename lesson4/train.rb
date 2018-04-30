@@ -43,7 +43,11 @@ class Train
   end
 
   def current_station
-    @route.station_list[@current_station_index]
+    if @route.nil?
+      puts "No route set"
+    else  
+      @route.station_list[@current_station_index]
+    end
   end 
 
   def set_route(route)
@@ -99,6 +103,17 @@ class Train
     end 
   end
 
+  def self.get_train_by_name(all_trains, train_name)
+    all_trains.each do |train|
+      return train if train.num == train_name
+    end
+  end
+
+  def self.user_train_choice
+    show_train_menu
+    gets.chomp
+  end
+
   protected
 # я вынесла эти методы в область protected поскольку они - внутренние методы, не надо чтоб были доступны из вне класса, а вызывались внутри класса. 
 # Эти методы не будут вызываться из клиенского кода. Выбрала протектед поскольку есть дети. 
@@ -116,5 +131,16 @@ class Train
 
   def not_first_station
     current_station != @route.first_station
+  end
+
+  def self.show_train_menu
+    puts "Choose from the following:"
+    puts "-- Type '1' to create a train(s)."
+    puts "-- Type '2' to set a route for a train."
+    puts "-- Type '3' to move a train one station ahead."
+    puts "-- Type '4' to move a train one station back."
+    puts "-- Type '5' to move a train to any chosen station."
+    puts "-- Type '6' to go to the main menu."
+    puts "-- Type '0' to exit the program."
   end
 end

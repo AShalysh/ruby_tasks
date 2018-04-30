@@ -1,7 +1,8 @@
 class Route
-  attr_reader :station_list
+  attr_reader :station_list, :name
 
-  def initialize(first_station, last_station)
+  def initialize(name, first_station, last_station)
+    @name = name
     @station_list = [first_station, last_station]
   end
 
@@ -35,10 +36,30 @@ class Route
   def get_station_by_name(name)
     @station_list.each do |station|
       return station if station.name == name
-    end  
-  end  
+    end
+  end
+
+  def self.get_route_by_name(all_routes, route_name)
+    all_routes.each do |route|
+      return route if route.name == route_name
+    end
+  end
 
   def display_all_stations
     @station_list.each { |station| puts "#{station.name}" }
+  end
+
+  def self.user_route_choice
+    show_route_menu
+    gets.chomp
+  end
+
+  def self.show_route_menu
+    puts "Choose from the following:"
+    puts "-- Type '1' to create a route(s)."
+    puts "-- Type '2' to add a station(s) to route (between the first and last stations)."
+    puts "-- Type '3' to remove a station from route."
+    puts "-- Type '4' to go to the main menu."
+    puts "-- Type '0' to exit the program."
   end
 end

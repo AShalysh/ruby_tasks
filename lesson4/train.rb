@@ -28,17 +28,21 @@ class Train
     end
   end
 
+  def self.display_all_trains(all_trains)
+    all_trains.each { |train| puts "#{train.num}"}
+  end
+
   def total_number_carriages
-    @carriages.count
+    puts @carriages.count
   end
 
   def remove_carriage(carriage_position)
-    if @speed == 0 && carriage_position <= total_number_carriages && total_number_carriages != 0
+    if @speed == 0 
       @carriages.delete_at(carriage_position - 1)
       puts "This carriage is removed."
     else
       puts "Can not remove the carriage because: " 
-      puts "1) Your speed > 0; 2) the carriage number is greater than the number of total carriages; 3)Train does not have any carriages."
+      puts "1) Your speed > 0; 2) Train does not have this carriage."
     end
   end
 
@@ -46,6 +50,7 @@ class Train
     if @route.nil?
       puts "No route set"
     else  
+      puts @route.station_list[@current_station_index].name 
       @route.station_list[@current_station_index]
     end
   end 
@@ -99,7 +104,7 @@ class Train
     when "cargo"
       CargoTrain.new(train_name)
     else
-      puts "Carriage type doesn't exist." 
+      puts "Train type doesn't exist." 
     end 
   end
 
@@ -107,11 +112,6 @@ class Train
     all_trains.each do |train|
       return train if train.num == train_name
     end
-  end
-
-  def self.user_train_choice
-    show_train_menu
-    gets.chomp
   end
 
   protected
@@ -131,16 +131,5 @@ class Train
 
   def not_first_station
     current_station != @route.first_station
-  end
-
-  def self.show_train_menu
-    puts "Choose from the following:"
-    puts "-- Type '1' to create a train(s)."
-    puts "-- Type '2' to set a route for a train."
-    puts "-- Type '3' to move a train one station ahead."
-    puts "-- Type '4' to move a train one station back."
-    puts "-- Type '5' to move a train to any chosen station."
-    puts "-- Type '6' to go to the main menu."
-    puts "-- Type '0' to exit the program."
   end
 end

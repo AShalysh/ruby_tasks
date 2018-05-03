@@ -48,18 +48,4 @@ class Route
   def display_all_stations
     @station_list.each { |station| puts "#{station.name}" }
   end
-
-  def self.user_route_choice
-    show_route_menu
-    gets.chomp
-  end
-
-  def self.show_route_menu
-    puts "Choose from the following:"
-    puts "-- Type '1' to create a route(s)."
-    puts "-- Type '2' to add a station(s) to route (between the first and last stations)."
-    puts "-- Type '3' to remove a station from route."
-    puts "-- Type '4' to go to the main menu."
-    puts "-- Type '0' to exit the program."
-  end
 end

@@ -43,9 +43,23 @@ class Route
     all_routes.each do |route|
       return route if route.name == route_name
     end
+    puts "Route not found"
+    nil
   end
 
-  def display_all_stations
-    @station_list.each { |station| puts "#{station.name}" }
+  def display_all_station_list
+    if @station_list.empty?
+      puts "There are no stations."
+    else
+      @station_list.each { |station| puts "#{station.name}" }
+    end
+  end
+
+  def self.display_all_routes(all_routes)
+    if all_routes.empty?
+      puts "There are no routes."
+    else
+      all_routes.each { |route| puts "#{route.name}"}
+    end
   end
 end

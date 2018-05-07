@@ -75,6 +75,14 @@ class Interface
     puts "The train moved one station."
   end
 
+  def all_created_trains_message
+    puts "The list of existing trains: "
+  end
+
+  def if_all_trains_empty
+    puts "Please create a train."
+  end
+
 #-----------Station-------------
   def user_station_choice
     show_station_menu
@@ -106,6 +114,14 @@ class Interface
 
   def all_trains_message
     puts "The list of all trains on the station: "
+  end
+
+  def all_created_stations_message
+    puts "The list of existing stations: "
+  end
+
+  def if_all_stations_empty
+    puts "Please create stations."
   end
 #-----------Route-------------
   def user_route_choice
@@ -141,11 +157,19 @@ class Interface
   end
 
   def stations_to_out_route_info_message
-    puts "Choose the existing route name."
+    puts "Choose the existing route name!"
   end
 
   def show_current_station_list
     puts "The current list of stations in your chosen route: "
+  end
+
+  def all_created_routes_message
+    puts "The list of all existing routes: "
+  end
+
+  def if_all_routes_empty
+    puts "Please create a route."
   end
 
 #-----------Carriage-------------

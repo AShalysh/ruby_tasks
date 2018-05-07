@@ -29,11 +29,16 @@ class Train
   end
 
   def self.display_all_trains(all_trains)
-    all_trains.each { |train| puts "#{train.num}"}
+    if all_trains.empty?
+      puts "There are no trains."
+    else
+      all_trains.each { |train| puts "#{train.num}"}
+    end
   end
 
   def total_number_carriages
     puts @carriages.count
+    @carriages.count
   end
 
   def remove_carriage(carriage_position)
@@ -57,8 +62,12 @@ class Train
 
   def set_route(route)
     @route = route
-    @current_station_index = 0
-    set_arrival
+    if @route.nil?
+      puts "There is no such root."
+    else
+      @current_station_index = 0
+      set_arrival
+    end
   end
 
   def go_to_next_station

@@ -36,12 +36,18 @@ class Station
   end
 
   def self.display_all_stations(all_stations)
+    if all_stations.empty?
+      puts "There are no stations."
+    else
     all_stations.each { |station| puts "#{station.name}"}
+    end
   end
 
   def self.get_station_by_name(all_stations, station_name)
     all_stations.each do |station|
       return station if station.name == station_name
-    end  
+    end
+    puts "Station not found."
+    nil
   end
 end

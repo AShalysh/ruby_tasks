@@ -83,6 +83,10 @@ class Interface
     puts "Please create a train."
   end
 
+  def train_not_found_messsage
+    puts "Train not found."
+  end
+
 #-----------Station-------------
   def user_station_choice
     show_station_menu
@@ -92,7 +96,7 @@ class Interface
   def show_station_menu
     puts "Choose from the following:"
     puts "-- Type '1' to create a station(s)."
-    puts "-- Type '2' to display the list of all stations."
+    puts "-- Type '2' to display the list of all stations/show number of instances."
     puts "-- Type '3' to display the list of all trains on the station."
     puts "-- Type '4' to go to the main menu."
     puts "-- Type '0' to exit the program."
@@ -112,6 +116,26 @@ class Interface
     puts "Your station is created successfully"
   end
 
+  def user_given_first_station_name
+    exit_loop_message
+    request_first_station_name
+    gets.chomp
+  end
+
+  def request_first_station_name
+    puts "What is the name of the first station?"
+  end
+
+  def user_given_last_station_name
+    exit_loop_message
+    request_last_station_name
+    gets.chomp
+  end
+
+  def request_last_station_name
+    puts "What is the name of the last station?"
+  end
+
   def all_trains_message
     puts "The list of all trains on the station: "
   end
@@ -126,6 +150,18 @@ class Interface
 
   def train_company_name_message
     puts "The name of train manufacture company: "
+  end
+
+  def station_not_found_messsage
+    puts "Station not found."
+  end
+
+  def no_stations_message
+    puts "There are no stations."
+  end
+
+  def station_instances_number_message
+    puts "The number of created station instances: "
   end
 #-----------Route-------------
   def user_route_choice
@@ -174,6 +210,10 @@ class Interface
 
   def if_all_routes_empty
     puts "Please create a route."
+  end
+
+  def route_not_found_messsage
+    puts "Route not found."
   end
 
 #-----------Carriage-------------

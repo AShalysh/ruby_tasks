@@ -1,12 +1,26 @@
 class Station
+  include InstanceCounter
   attr_reader :name, :trains
 
-@@all_created_stations = []
+  @@all_created_stations = []
+
+  def self.all
+    @@all_created_stations
+  end
+
+  def self.display_all_stations(all_stations)
+    all_stations.each { |station| puts "#{station.name}"}
+  end
+
+  def self.get_station_by_name(all_stations, station_name)
+    all_stations.find { |station| station.name == station_name}
+  end
 
   def initialize(name)
     @name = name
     @trains = []
     @@all_created_stations << self
+    super()
   end
 
   def arrival(train)
@@ -36,29 +50,5 @@ class Station
   def display_all_trains
     @trains.each { |train| puts "#{train.num}" }
     puts "There are no trains on the station." if @trains.empty?
-  end
-
-  def self.display_all_stations(all_stations)
-    if all_stations.empty?
-      puts "There are no stations."
-    else
-    all_stations.each { |station| puts "#{station.name}"}
-    end
-  end
-
-  def self.get_station_by_name(all_stations, station_name)
-    all_stations.each do |station|
-      return station if station.name == station_name
-    end
-    puts "Station not found."
-    nil
-  end
-  
-  def self.all
-    if all_stations.empty?
-      puts "There are no stations."
-    else
-      @@all_created_stations
-    end
   end
 end

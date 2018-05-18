@@ -1,11 +1,32 @@
 class Train
   include Company
+  include InstanceCounter
   attr_reader :num, :speed, :route
+
+  def self.for(train_name,train_type)
+    case train_type
+    when "pass"
+      PassengerTrain.new(train_name)
+    when "cargo"
+      CargoTrain.new(train_name)
+    else
+      puts "Train type doesn't exist." 
+    end 
+  end
+
+  def self.find(all_trains, train_number)
+    all_trains.find { |train| train.num == train_number}
+  end
+
+  def self.get_train_by_name(all_trains, train_name)
+    all_trains.find { |train| train.num == train_name}
+  end
 
   def initialize(num)
     @num = num
     @speed = 0
     @carriages = []
+    super
   end
 
   def increase_speed(value)
@@ -104,23 +125,6 @@ class Train
       @route.station_list[@current_station_index + 1]
     else
       puts "There is no next station."
-    end
-  end
-
-  def self.for(train_name,train_type)
-    case train_type
-    when "pass"
-      PassengerTrain.new(train_name)
-    when "cargo"
-      CargoTrain.new(train_name)
-    else
-      puts "Train type doesn't exist." 
-    end 
-  end
-
-  def self.get_train_by_name(all_trains, train_name)
-    all_trains.each do |train|
-      return train if train.num == train_name
     end
   end
 

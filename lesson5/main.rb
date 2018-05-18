@@ -1,5 +1,6 @@
 require 'pry-nav'
 require_relative 'module'
+require_relative 'instance_counter'
 require_relative 'station'
 require_relative 'route'
 require_relative 'train'

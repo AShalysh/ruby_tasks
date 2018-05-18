@@ -3,13 +3,9 @@ class MainInterface
     @interface = interface
   end 
 
-  def self.all 
-    @@all_stations
-  end
-
   def start
     all_trains = []
-    @@all_stations = []
+    all_stations = []
     all_routes = []
     all_carriages = []
     
@@ -23,18 +19,28 @@ class MainInterface
               station_name = @interface.user_given_station_name.capitalize
               break if station_name == "Stop"
               new_station = Station.new(station_name)
-              @@all_stations << new_station
+              all_stations << new_station
               @interface.station_created_message
             end
           when '2'
-            Station.display_all_stations(@@all_stations)
+            if all_stations.empty?
+              @interface.no_stations_message
+            else
+              Station.display_all_stations(all_stations)
+            end
+            @interface.station_instances_number_message
+            Station.instances
           when '3'
             loop do
               station_name = @interface.user_given_station_name.capitalize
               break if station_name == "Stop"
-              chosen_station = Station.get_station_by_name(@@all_stations, station_name)
-              @interface.all_trains_message
-              chosen_station.display_all_trains unless chosen_station.nil?
+              chosen_station = Station.get_station_by_name(all_stations, station_name)
+              if chosen_station.nil?
+                @interface.station_not_found_messsage
+              else
+                @interface.all_trains_message
+                chosen_station.display_all_trains
+              end
             end
           when '4'
             break
@@ -50,19 +56,21 @@ class MainInterface
           when '1'
               @interface.create_route_info_message
               @interface.all_created_stations_message
-              Station.display_all_stations(@@all_stations)
-              if @@all_stations.empty?
+              Station.display_all_stations(all_stations)
+              if all_stations.empty?
                 @interface.if_all_stations_empty
               else
                 loop do
                   route_name = @interface.user_given_route_name.capitalize
                   break if route_name == "Stop"
-                  first_station_name = @interface.user_given_station_name.capitalize
+                  first_station_name = @interface.user_given_first_station_name.capitalize
                   break if first_station_name == "Stop"
-                  first_station = Station.get_station_by_name(@@all_stations, first_station_name)
-                  last_station_name = @interface.user_given_station_name.capitalize
+                  first_station = Station.get_station_by_name(all_stations, first_station_name)
+                  @interface.station_not_found_messsage if first_station.nil?
+                  last_station_name = @interface.user_given_last_station_name.capitalize
                   break if last_station_name == "Stop"
-                  last_station = Station.get_station_by_name(@@all_stations, last_station_name)
+                  last_station = Station.get_station_by_name(all_stations, last_station_name)
+                  @interface.station_not_found_messsage if last_station.nil?
                   new_route = Route.new(route_name, first_station, last_station)
                   all_routes << new_route
                   @interface.route_created_message
@@ -79,16 +87,20 @@ class MainInterface
                   route_name = @interface.user_given_route_name.capitalize
                   break if route_name == "Stop"
                   chosen_route = Route.get_route_by_name(all_routes, route_name)
-                  @interface.show_current_station_list
-                  chosen_route.display_all_station_list
-                  station_name = @interface.user_given_station_name.capitalize
-                  break if station_name == "Stop"
-                  new_station = Station.new(station_name)
-                  @@all_stations << new_station
-                  chosen_route.add_station(new_station)
-                  @interface.show_current_station_list
-                  chosen_route.display_all_station_list
+                  if chosen_route.nil?
+                    @interface.route_not_found_messsage
+                  else
+                    @interface.show_current_station_list
+                    chosen_route.display_all_station_list
+                    station_name = @interface.user_given_station_name.capitalize
+                    break if station_name == "Stop"
+                    new_station = Station.new(station_name)
+                    all_stations << new_station
+                    chosen_route.add_station(new_station)
+                    @interface.show_current_station_list
+                    chosen_route.display_all_station_list
                   end
+                end
               end     
           when '3'
             @interface.all_created_routes_message
@@ -97,17 +109,21 @@ class MainInterface
               @interface.if_all_routes_empty
             else
               loop do 
-              @interface.stations_to_out_route_info_message
-              route_name = @interface.user_given_route_name.capitalize
-              break if route_name == "Stop"
-              chosen_route = Route.get_route_by_name(all_routes, route_name)
-              @interface.show_current_station_list
-              chosen_route.display_all_station_list
-              station_name = @interface.user_given_station_name.capitalize
-              break if station_name == "Stop"
-              chosen_route.delete_station(station_name)
-              @interface.show_current_station_list
-              chosen_route.display_all_station_list
+                @interface.stations_to_out_route_info_message
+                route_name = @interface.user_given_route_name.capitalize
+                break if route_name == "Stop"
+                chosen_route = Route.get_route_by_name(all_routes, route_name)
+                if chosen_route.nil?
+                  @interface.route_not_found_messsage
+                else
+                  @interface.show_current_station_list
+                  chosen_route.display_all_station_list
+                  station_name = @interface.user_given_station_name.capitalize
+                  break if station_name == "Stop"
+                  chosen_route.delete_station(station_name)
+                  @interface.show_current_station_list
+                  chosen_route.display_all_station_list
+                end
               end
             end
           when '4'
@@ -151,10 +167,14 @@ class MainInterface
                 route_name = @interface.user_given_route_name.capitalize
                 break if route_name == "Stop"
                 chosen_route = Route.get_route_by_name(all_routes, route_name)
-                chosen_train.set_route(chosen_route)
-                @interface.route_set_message
-                @interface.current_station
-                chosen_train.current_station.name
+                if chosen_route.nil?
+                  @interface.route_not_found_messsage
+                else
+                  chosen_train.set_route(chosen_route)
+                  @interface.route_set_message
+                  @interface.current_station
+                  chosen_train.current_station.name
+                end
               end
             end
           when '3'
@@ -162,20 +182,28 @@ class MainInterface
               train_name = @interface.user_given_train_name.capitalize
               break if train_name == "Stop"
               chosen_train = Train.get_train_by_name(all_trains, train_name)
-              chosen_train.go_to_next_station
-              @interface.train_moved_message
-              @interface.current_station
-              chosen_train.current_station.name
+              if chosen_train.nil?
+                @interface.train_not_found_messsage
+              else
+                chosen_train.go_to_next_station
+                @interface.train_moved_message
+                @interface.current_station
+                chosen_train.current_station.name
+              end
             end
           when '4'
             loop do
               train_name = @interface.user_given_train_name.capitalize
               break if train_name == "Stop"
               chosen_train = Train.get_train_by_name(all_trains, train_name)
-              chosen_train.go_to_prev_station
-              @interface.train_moved_message
-              @interface.current_station
-              chosen_train.current_station.name
+              if chosen_train.nil?
+                @interface.train_not_found_messsage
+              else
+                chosen_train.go_to_prev_station
+                @interface.train_moved_message
+                @interface.current_station
+                chosen_train.current_station.name
+              end
             end
           when '5'
             Train.display_all_trains(all_trains)
@@ -196,27 +224,31 @@ class MainInterface
             Train.display_all_trains(all_trains)
             train_name = @interface.user_given_train_name.capitalize
             chosen_train = Train.get_train_by_name(all_trains, train_name)
-            i = 0
-            loop do
-              i += 1
-              break if i > number_of_carriages
-              carriage_type = @interface.user_given_carriage_type
-              break if carriage_type.downcase ==  "stop"
-              new_carriage = case carriage_type
-              when "pass"
-                PassengerCarriage.new
-              when "cargo"
-                CargoCarriage.new
-              else
-                puts "Carriage type doesn't exist." 
+            if chosen_train.nil?
+                @interface.train_not_found_messsage
+            else
+              i = 0
+              loop do
+                i += 1
+                break if i > number_of_carriages
+                carriage_type = @interface.user_given_carriage_type
+                break if carriage_type.downcase ==  "stop"
+                new_carriage = case carriage_type
+                when "pass"
+                  PassengerCarriage.new
+                when "cargo"
+                  CargoCarriage.new
+                else
+                  puts "Carriage type doesn't exist." 
+                end
+                all_carriages << new_carriage
+                new_carriage.set_company("RZD St.Peterburg")
+                chosen_train.add_carriage(new_carriage)
+                @interface.total_num_carriages_message
+                chosen_train.total_number_carriages
+                @interface.carriage_company_name_message
+                new_carriage.print_company_name
               end
-              all_carriages << new_carriage
-              new_carriage.set_company("RZD St.Peterburg")
-              chosen_train.add_carriage(new_carriage)
-              @interface.total_num_carriages_message
-              chosen_train.total_number_carriages
-              @interface.carriage_company_name_message
-              new_carriage.print_company_name
             end
           when '2'
             loop do
@@ -224,11 +256,15 @@ class MainInterface
               Train.display_all_trains(all_trains)
               train_name = @interface.user_given_train_name.capitalize
               chosen_train = Train.get_train_by_name(all_trains, train_name)
-              carriage_number = @interface.user_carriage_remove_number.to_i
-              break if carriage_number == 0
-              chosen_train.remove_carriage(carriage_number)
-              @interface.total_num_carriages_message
-              chosen_train.total_number_carriages
+              if chosen_train.nil?
+                @interface.train_not_found_messsage
+              else
+                carriage_number = @interface.user_carriage_remove_number.to_i
+                break if carriage_number == 0
+                chosen_train.remove_carriage(carriage_number)
+                @interface.total_num_carriages_message
+                chosen_train.total_number_carriages
+              end
             end
           when '3'
             break

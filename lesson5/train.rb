@@ -3,6 +3,8 @@ class Train
   include InstanceCounter
   attr_reader :num, :speed, :route
 
+  @@count = 0
+
   def self.for(train_name,train_type)
     case train_type
     when "pass"

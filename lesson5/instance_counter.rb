@@ -5,19 +5,29 @@ module InstanceCounter
   end
   
   module ClassMethod 
+    # def instances
+    #   @@count
+    # end
     def instances
-      @@count
+      class_variable_get(:@@count)
     end
   end
 
   module InstanceMethod
+    # def initialize
+    #   register_instance
+    # end
+    # def register_instance
+    #   @@count += 1
+    # end
+    
     def initialize
-      @@count = 0
+      register_instance
     end
 
-    private 
     def register_instance
-      @@count += 1
+      class_variable_get(:@@count)
+      #@@count += 1
     end
   end
 end

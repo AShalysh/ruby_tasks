@@ -3,11 +3,11 @@ class Route
   attr_reader :station_list, :name
 
   def self.get_route_by_name(all_routes, route_name)
-    all_routes.find { |route| route.name == route_name}
+    all_routes.find { |route| route.name == route_name }
   end
 
   def self.display_all_routes(all_routes)
-    all_routes.each { |route| puts "#{route.name}"}
+    all_routes.each { |route| puts "#{route.name}" }
   end
 
   def initialize(name, first_station, last_station)

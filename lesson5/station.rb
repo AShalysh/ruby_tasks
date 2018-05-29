@@ -1,7 +1,7 @@
 class Station
 
   @@count = 0
-  
+
   include InstanceCounter
   attr_reader :name, :trains
 
@@ -13,11 +13,11 @@ class Station
   end
 
   def self.display_all_stations(all_stations)
-    all_stations.each { |station| puts "#{station.name}"}
+    all_stations.each { |station| puts "#{station.name}" }
   end
 
   def self.get_station_by_name(all_stations, station_name)
-    all_stations.find { |station| station.name == station_name}
+    all_stations.find { |station| station.name == station_name }
   end
 
   def initialize(name)

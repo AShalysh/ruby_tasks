@@ -1,4 +1,7 @@
 class Route
+
+  @@count = 0
+  
   include InstanceCounter
   attr_reader :station_list, :name
 
@@ -13,7 +16,7 @@ class Route
   def initialize(name, first_station, last_station)
     @name = name
     @station_list = [first_station, last_station]
-    super
+    super()
   end
 
   def first_station

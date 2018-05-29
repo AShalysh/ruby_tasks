@@ -28,7 +28,7 @@ class Train
     @num = num
     @speed = 0
     @carriages = []
-    super
+    super()
   end
 
   def increase_speed(value)

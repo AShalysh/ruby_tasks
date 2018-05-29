@@ -1,14 +1,15 @@
 class MainInterface
+
   def initialize(interface)
     @interface = interface
+    @all_trains = []
+    @all_stations = []
+    @all_routes = []
+    @all_carriages = []
   end 
 
   def start
-    all_trains = []
-    all_stations = []
-    all_routes = []
-    all_carriages = []
-    
+     
     loop do 
       case @interface.user_main_menu_choice
       when '1'
@@ -19,14 +20,14 @@ class MainInterface
               station_name = @interface.user_given_station_name.capitalize
               break if station_name == "Stop"
               new_station = Station.new(station_name)
-              all_stations << new_station
+              @all_stations << new_station
               @interface.station_created_message
             end
           when '2'
-            if all_stations.empty?
+            if @all_stations.empty?
               @interface.no_stations_message
             else
-              Station.display_all_stations(all_stations)
+              Station.display_all_stations(@all_stations)
             end
             @interface.station_instances_number_message
             Station.instances
@@ -34,7 +35,7 @@ class MainInterface
             loop do
               station_name = @interface.user_given_station_name.capitalize
               break if station_name == "Stop"
-              chosen_station = Station.get_station_by_name(all_stations, station_name)
+              chosen_station = Station.get_station_by_name(@all_stations, station_name)
               if chosen_station.nil?
                 @interface.station_not_found_messsage
               else
@@ -56,8 +57,8 @@ class MainInterface
           when '1'
               @interface.create_route_info_message
               @interface.all_created_stations_message
-              Station.display_all_stations(all_stations)
-              if all_stations.empty?
+              Station.display_all_stations(@all_stations)
+              if @all_stations.empty?
                 @interface.if_all_stations_empty
               else
                 loop do
@@ -65,28 +66,28 @@ class MainInterface
                   break if route_name == "Stop"
                   first_station_name = @interface.user_given_first_station_name.capitalize
                   break if first_station_name == "Stop"
-                  first_station = Station.get_station_by_name(all_stations, first_station_name)
+                  first_station = Station.get_station_by_name(@all_stations, first_station_name)
                   @interface.station_not_found_messsage if first_station.nil?
                   last_station_name = @interface.user_given_last_station_name.capitalize
                   break if last_station_name == "Stop"
-                  last_station = Station.get_station_by_name(all_stations, last_station_name)
+                  last_station = Station.get_station_by_name(@all_stations, last_station_name)
                   @interface.station_not_found_messsage if last_station.nil?
                   new_route = Route.new(route_name, first_station, last_station)
-                  all_routes << new_route
+                  @all_routes << new_route
                   @interface.route_created_message
                 end
               end
           when '2'
               @interface.all_created_routes_message
-              Route.display_all_routes(all_routes)
-              if all_routes.empty?
+              Route.display_all_routes(@all_routes)
+              if @all_routes.empty?
                 @interface.if_all_routes_empty
               else
                 loop do
                   @interface.stations_to_out_route_info_message
                   route_name = @interface.user_given_route_name.capitalize
                   break if route_name == "Stop"
-                  chosen_route = Route.get_route_by_name(all_routes, route_name)
+                  chosen_route = Route.get_route_by_name(@all_routes, route_name)
                   if chosen_route.nil?
                     @interface.route_not_found_messsage
                   else
@@ -95,7 +96,7 @@ class MainInterface
                     station_name = @interface.user_given_station_name.capitalize
                     break if station_name == "Stop"
                     new_station = Station.new(station_name)
-                    all_stations << new_station
+                    @all_stations << new_station
                     chosen_route.add_station(new_station)
                     @interface.show_current_station_list
                     chosen_route.display_all_station_list
@@ -104,15 +105,15 @@ class MainInterface
               end     
           when '3'
             @interface.all_created_routes_message
-            Route.display_all_routes(all_routes)
-            if all_routes.empty?
+            Route.display_all_routes(@all_routes)
+            if @all_routes.empty?
               @interface.if_all_routes_empty
             else
               loop do 
                 @interface.stations_to_out_route_info_message
                 route_name = @interface.user_given_route_name.capitalize
                 break if route_name == "Stop"
-                chosen_route = Route.get_route_by_name(all_routes, route_name)
+                chosen_route = Route.get_route_by_name(@all_routes, route_name)
                 if chosen_route.nil?
                   @interface.route_not_found_messsage
                 else
@@ -145,28 +146,28 @@ class MainInterface
               train_type = @interface.user_given_train_type
               new_train = Train.for(train_name, train_type)
               new_train.set_company("RZD Moscow")
-              all_trains << new_train
+              @all_trains << new_train
               @interface.train_created_message
               @interface.train_company_name_message
               new_train.print_company_name
             end
           when '2'     
             @interface.all_created_trains_message
-            Train.display_all_trains(all_trains)
+            Train.display_all_trains(@all_trains)
             @interface.all_created_routes_message
-            Route.display_all_routes(all_routes)
+            Route.display_all_routes(@all_routes)
             @interface.set_route_to_train_info_message
-            if all_trains.empty? || all_routes.empty?
+            if @all_trains.empty? || @all_routes.empty?
               @interface.if_all_routes_empty
               @interface.if_all_trains_empty
             else
               loop do
                 train_name = @interface.user_given_train_name.capitalize
                 break if train_name == "Stop"
-                chosen_train = Train.get_train_by_name(all_trains, train_name)
+                chosen_train = Train.get_train_by_name(@all_trains, train_name)
                 route_name = @interface.user_given_route_name.capitalize
                 break if route_name == "Stop"
-                chosen_route = Route.get_route_by_name(all_routes, route_name)
+                chosen_route = Route.get_route_by_name(@all_routes, route_name)
                 if chosen_route.nil?
                   @interface.route_not_found_messsage
                 else
@@ -181,7 +182,7 @@ class MainInterface
             loop do
               train_name = @interface.user_given_train_name.capitalize
               break if train_name == "Stop"
-              chosen_train = Train.get_train_by_name(all_trains, train_name)
+              chosen_train = Train.get_train_by_name(@all_trains, train_name)
               if chosen_train.nil?
                 @interface.train_not_found_messsage
               else
@@ -195,7 +196,7 @@ class MainInterface
             loop do
               train_name = @interface.user_given_train_name.capitalize
               break if train_name == "Stop"
-              chosen_train = Train.get_train_by_name(all_trains, train_name)
+              chosen_train = Train.get_train_by_name(@all_trains, train_name)
               if chosen_train.nil?
                 @interface.train_not_found_messsage
               else
@@ -206,7 +207,7 @@ class MainInterface
               end
             end
           when '5'
-            Train.display_all_trains(all_trains)
+            Train.display_all_trains(@all_trains)
           when '6'
             break
           when '0'
@@ -221,9 +222,9 @@ class MainInterface
           when '1'
             number_of_carriages = @interface.user_carriage_number_choice.to_i
             @interface.all_created_trains_message
-            Train.display_all_trains(all_trains)
+            Train.display_all_trains(@all_trains)
             train_name = @interface.user_given_train_name.capitalize
-            chosen_train = Train.get_train_by_name(all_trains, train_name)
+            chosen_train = Train.get_train_by_name(@all_trains, train_name)
             if chosen_train.nil?
                 @interface.train_not_found_messsage
             else
@@ -241,7 +242,7 @@ class MainInterface
                 else
                   puts "Carriage type doesn't exist." 
                 end
-                all_carriages << new_carriage
+                @all_carriages << new_carriage
                 new_carriage.set_company("RZD St.Peterburg")
                 chosen_train.add_carriage(new_carriage)
                 @interface.total_num_carriages_message
@@ -253,9 +254,9 @@ class MainInterface
           when '2'
             loop do
               @interface.all_created_trains_message
-              Train.display_all_trains(all_trains)
+              Train.display_all_trains(@all_trains)
               train_name = @interface.user_given_train_name.capitalize
-              chosen_train = Train.get_train_by_name(all_trains, train_name)
+              chosen_train = Train.get_train_by_name(@all_trains, train_name)
               if chosen_train.nil?
                 @interface.train_not_found_messsage
               else

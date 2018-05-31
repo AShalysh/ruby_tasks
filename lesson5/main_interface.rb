@@ -30,7 +30,6 @@ class MainInterface
               Station.display_all_stations(@all_stations)
             end
             @interface.station_instances_number_message
-            Station.instances
           when '3'
             loop do
               station_name = @interface.user_given_station_name.capitalize
@@ -145,7 +144,7 @@ class MainInterface
               break if train_name == "Stop"
               train_type = @interface.user_given_train_type
               new_train = Train.for(train_name, train_type)
-              new_train.set_company("RZD Moscow")
+              new_train.company_name = "RZD Moscow"
               @all_trains << new_train
               @interface.train_created_message
               @interface.train_company_name_message
@@ -207,7 +206,12 @@ class MainInterface
               end
             end
           when '5'
-            Train.display_all_trains(@all_trains)
+            if @all_trains.empty?
+              @interface.no_trains_message
+            else
+              Train.display_all_trains(@all_trains)
+            end
+            @interface.train_instances_number_message
           when '6'
             break
           when '0'
@@ -243,7 +247,7 @@ class MainInterface
                   puts "Carriage type doesn't exist." 
                 end
                 @all_carriages << new_carriage
-                new_carriage.set_company("RZD St.Peterburg")
+                new_carriage.company_name = "RZD St.Peterburg"
                 chosen_train.add_carriage(new_carriage)
                 @interface.total_num_carriages_message
                 chosen_train.total_number_carriages

@@ -1,12 +1,8 @@
 class Station
-
-  @@count = 0
-
   include InstanceCounter
   attr_reader :name, :trains
 
   @@all_created_stations = []
-
 
   def self.all
     @@all_created_stations
@@ -24,7 +20,7 @@ class Station
     @name = name
     @trains = []
     @@all_created_stations << self
-    super()
+    register_instance
   end
 
   def arrival(train)

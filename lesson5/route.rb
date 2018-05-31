@@ -1,9 +1,12 @@
 class Route
-
-  @@count = 0
-  
   include InstanceCounter
   attr_reader :station_list, :name
+
+  @@all_created_routes = []
+
+  def self.all
+    @@all_created_routes
+  end
 
   def self.get_route_by_name(all_routes, route_name)
     all_routes.find { |route| route.name == route_name }
@@ -16,7 +19,8 @@ class Route
   def initialize(name, first_station, last_station)
     @name = name
     @station_list = [first_station, last_station]
-    super()
+    register_instance
+    @@all_created_routes << self
   end
 
   def first_station

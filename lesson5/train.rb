@@ -1,9 +1,13 @@
 class Train
-  include Company
   include InstanceCounter
+  include Company
   attr_reader :num, :speed, :route
 
-  @@count = 0
+  @@all_created_trains = []
+
+  def self.all
+    @@all_created_trains
+  end
 
   def self.for(train_name,train_type)
     case train_type
@@ -16,6 +20,14 @@ class Train
     end 
   end
 
+  def self.display_all_trains(all_trains)
+    if all_trains.empty?
+      puts "There are no trains."
+    else
+      all_trains.each { |train| puts "#{train.num}"}
+    end
+  end
+#self.find сделан также как и следующий метод, только название -фаинд потому что в задание было указано дать такое имя. self.get_train_by_name - такой же метод, но я его сделала раньше и использую в программе, поэтому не удаляю.
   def self.find(all_trains, train_number)
     all_trains.find { |train| train.num == train_number}
   end
@@ -28,7 +40,8 @@ class Train
     @num = num
     @speed = 0
     @carriages = []
-    super()
+    @@all_created_trains << self
+    register_instance
   end
 
   def increase_speed(value)
@@ -49,14 +62,6 @@ class Train
       puts "Carriage is added."
     else
       puts "Your speed > 0. You need to stop the train."
-    end
-  end
-
-  def self.display_all_trains(all_trains)
-    if all_trains.empty?
-      puts "There are no trains."
-    else
-      all_trains.each { |train| puts "#{train.num}"}
     end
   end
 

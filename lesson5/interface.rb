@@ -32,7 +32,7 @@ class Interface
     puts "-- Type '2' to set a route for a train."
     puts "-- Type '3' to move a train one station ahead."
     puts "-- Type '4' to move a train one station back."
-    puts "-- Type '5' to show all created trains."
+    puts "-- Type '5' to show all created trains/show number of instances."
     puts "-- Type '6' to go to the main menu."
     puts "-- Type '0' to exit the program."
   end
@@ -85,6 +85,14 @@ class Interface
 
   def train_not_found_messsage
     puts "Train not found."
+  end
+
+  def no_trains_message
+    puts "There are no trains."
+  end
+
+  def train_instances_number_message
+    puts "The number of created train instances: #{Train.instances}"
   end
 
 #-----------Station-------------
@@ -161,7 +169,7 @@ class Interface
   end
 
   def station_instances_number_message
-    puts "The number of created station instances: "
+    puts "The number of created station instances: #{Station.instances}"
   end
 #-----------Route-------------
   def user_route_choice

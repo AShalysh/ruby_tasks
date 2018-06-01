@@ -4,10 +4,11 @@ class Train
   attr_reader :num, :speed, :route
 
   @@all_created_trains = []
+  @@all_created_trains_hash = {}
 
-  def self.all
-    @@all_created_trains
-  end
+  # def self.all
+  #   @@all_created_trains
+  # end
 
   def self.for(train_name,train_type)
     case train_type
@@ -27,9 +28,9 @@ class Train
       all_trains.each { |train| puts "#{train.num}"}
     end
   end
-#self.find сделан также как и следующий метод, только название -фаинд потому что в задание было указано дать такое имя. self.get_train_by_name - такой же метод, но я его сделала раньше и использую в программе, поэтому не удаляю.
-  def self.find(all_trains, train_number)
-    all_trains.find { |train| train.num == train_number}
+
+  def self.find(train_number)
+    @@all_created_trains_hash[train_number.to_sym]
   end
 
   def self.get_train_by_name(all_trains, train_name)
@@ -41,6 +42,7 @@ class Train
     @speed = 0
     @carriages = []
     @@all_created_trains << self
+    @@all_created_trains_hash[num.to_sym] = self
     register_instance
   end
 

@@ -14,14 +14,14 @@ class Train
     when "cargo"
       CargoTrain.new(train_name)
     else
-      raise TypeError.new('Type of train is incorrect')
-      puts "Train type doesn't exist." 
+      #puts "Train type doesn't exist." 
+      raise TypeError, 'Type of train is incorrect'
     end 
   end
 
   def self.display_all_trains(all_trains)
     if all_trains.empty?
-      puts "There are no trains."
+      @interface.no_trains_message
     else
       all_trains.each { |train| puts "#{train.num}"}
     end
@@ -39,10 +39,10 @@ class Train
     @num = num
     @speed = 0
     @carriages = []
+    validate!
     @@all_created_trains << self
     @@all_created_trains_hash[num.to_sym] = self
-    register_instance
-    validate!
+    register_instance  
   end
 
   def increase_speed(value)
@@ -60,9 +60,9 @@ class Train
   def add_carriage(carriage)
     if @speed == 0
       @carriages << carriage
-      puts "Carriage is added."
+      @interface.carriage_added
     else
-      puts "Your speed > 0. You need to stop the train."
+      @interface.stop_train_message
     end
   end
 
@@ -74,16 +74,15 @@ class Train
   def remove_carriage(carriage_position)
     if @speed == 0 
       @carriages.delete_at(carriage_position - 1)
-      puts "This carriage is removed."
+      @interface.carriage_removed 
     else
-      puts "Can not remove the carriage because: " 
-      puts "1) Your speed > 0; 2) Train does not have this carriage."
+      @interface.can_not_remove_carriage
     end
   end
 
   def current_station
     if @route.nil?
-      puts "No route set"
+      @interface.no_route_set
     else  
       puts @route.station_list[@current_station_index].name 
       @route.station_list[@current_station_index]
@@ -93,7 +92,7 @@ class Train
   def set_route(route)
     @route = route
     if @route.nil?
-      puts "There is no such root."
+      @interface.no_such_route
     else
       @current_station_index = 0
       set_arrival
@@ -106,7 +105,7 @@ class Train
       @current_station_index += 1
       set_arrival
     else
-      puts "You are on the last station."
+      @interface.on_last_station
     end
   end
  
@@ -116,15 +115,15 @@ class Train
       @current_station_index -= 1
       set_arrival
     else
-      puts "You are on the first station."
+      @interface.on_first_station
     end
   end
 
   def prev_station
     if not_first_station
       @route.station_list[@current_station_index - 1]
-    else 
-      puts "There is no previous station."
+    else
+      @interface.no_previous_station  
     end
   end
 
@@ -132,12 +131,13 @@ class Train
     if not_last_station
       @route.station_list[@current_station_index + 1]
     else
-      puts "There is no next station."
+      @interface.no_next_station
     end
   end
 
   def valid?
     validate!
+    true
   rescue
     false
   end
@@ -149,7 +149,6 @@ class Train
     raise "Number can't be nil" if num.nil?
     raise "Number should be at least 5 symbols" if num.length < 5
     raise "Number has invalid format" if num !~ NUMBER_FORMAT
-    true
   end
 
   def set_arrival

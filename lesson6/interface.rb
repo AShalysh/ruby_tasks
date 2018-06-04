@@ -23,7 +23,11 @@ class Interface
 
   def print_exception(e)
     puts e.inspect
-    puts "Please try again"
+    puts "Please try again. Wrong input."
+  end
+
+  def attempt_number(attempt)
+    puts "There was #{attempt} attempts."
   end
 #-----------Train-------------
   def user_train_choice
@@ -48,7 +52,7 @@ class Interface
   end
 
   def request_train_name
-    puts "What is the name of train?"
+    puts "What is the number(name) of train?"
   end
 
   def user_given_train_type
@@ -98,6 +102,47 @@ class Interface
 
   def train_instances_number_message
     puts "The number of created train instances: #{Train.instances}"
+  end
+
+  def carriage_added
+    puts "Carriage is added."
+  end
+
+  def stop_train_message
+    puts "Your speed > 0. You need to stop the train."
+  end
+
+  def carriage_removed
+    puts "This carriage is removed."
+  end
+
+  def can_not_remove_carriage
+    puts "Can not remove the carriage because: " 
+    puts "1) Your speed > 0; 2) Train does not have this carriage."
+  end
+
+  def no_route_set
+    puts "No route set"
+  end
+
+  def no_such_route
+    puts "There is no such route."
+  end
+
+  def on_last_station
+    puts "You are on the last station."
+  end
+
+  def on_first_station
+    puts "You are on the first station."
+  end
+
+  def no_previous_station
+    puts "There is no previous station."
+  end
+
+  def no_next_station
+    puts "There is no next station."
   end
 
 #-----------Station-------------

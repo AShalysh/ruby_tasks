@@ -6,6 +6,7 @@ class MainInterface
     @all_stations = []
     @all_routes = []
     @all_carriages = []
+    @attempt = 0
   end 
 
   def start
@@ -143,16 +144,20 @@ class MainInterface
                 @interface.exit_loop_message
                 train_name = @interface.user_given_train_name.capitalize
                 break if train_name == "Stop"
+                @attempt += 1
                 train_type = @interface.user_given_train_type
                 new_train = Train.for(train_name, train_type)
                 new_train.company_name = "RZD Moscow"
-              rescue Exception => e
-                @interface.print_exception(e)
-              else    
                 @all_trains << new_train
                 @interface.train_created_message
                 @interface.train_company_name_message
                 new_train.print_company_name
+              rescue Exception => e
+                @interface.print_exception(e)
+                retry if @attempt < 3
+              ensure
+                @interface.attempt_number(@attempt)
+                @attempt = 0 if @attempt >= 3
               end  
             end
           when '2'     

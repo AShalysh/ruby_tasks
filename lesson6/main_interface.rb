@@ -6,7 +6,7 @@ class MainInterface
     @all_stations = []
     @all_routes = []
     @all_carriages = []
-    @attempt = 0
+    #@attempt = 0
   end 
 
   def start
@@ -18,11 +18,20 @@ class MainInterface
           case @interface.user_station_choice
           when '1'
             loop do
-              station_name = @interface.user_given_station_name.capitalize
-              break if station_name == "Stop"
-              new_station = Station.new(station_name)
-              @all_stations << new_station
-              @interface.station_created_message
+              attempt = 0
+              begin
+                station_name = @interface.user_given_station_name.capitalize
+                break if station_name == "Stop"
+                attempt += 1
+                new_station = Station.new(station_name)
+                @all_stations << new_station
+                @interface.station_created_message
+              rescue Exception => e
+                @interface.print_exception(e)
+                retry if attempt < 3
+              ensure
+                @interface.attempt_number(attempt)
+              end
             end
           when '2'
             if @all_stations.empty?
@@ -140,11 +149,12 @@ class MainInterface
           case @interface.user_train_choice
           when '1'
             loop do
+              attempt = 0
               begin
                 @interface.exit_loop_message
                 train_name = @interface.user_given_train_name.capitalize
                 break if train_name == "Stop"
-                @attempt += 1
+                attempt += 1
                 train_type = @interface.user_given_train_type
                 new_train = Train.for(train_name, train_type)
                 new_train.company_name = "RZD Moscow"
@@ -154,10 +164,9 @@ class MainInterface
                 new_train.print_company_name
               rescue Exception => e
                 @interface.print_exception(e)
-                retry if @attempt < 3
+                retry if attempt < 3
               ensure
-                @interface.attempt_number(@attempt)
-                @attempt = 0 if @attempt >= 3
+                @interface.attempt_number(attempt)
               end  
             end
           when '2'     

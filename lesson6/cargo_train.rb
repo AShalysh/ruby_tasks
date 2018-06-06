@@ -3,7 +3,7 @@ class CargoTrain < Train
     if carriage.is_a?(CargoCarriage)
       super(carriage)
     else
-      puts "Can't add non cargo carriage to cargo train."
+      @interface.non_cargo_carriage
     end
   end
 end

@@ -3,7 +3,7 @@ class PassengerTrain < Train
     if carriage.is_a?(PassengerCarriage)
       super(carriage)
     else
-      puts "Can't add non passenger carriage to passenger train."
+      @interface.non_passenger_carriage
     end
   end
 end

@@ -145,6 +145,14 @@ class Interface
     puts "There is no next station."
   end
 
+  def non_passenger_carriage
+    puts "Can't add non passenger carriage to passenger train."
+  end
+
+  def non_cargo_carriage
+    puts "Can't add non cargo carriage to cargo train."
+  end
+
 #-----------Station-------------
   def user_station_choice
     show_station_menu
@@ -167,7 +175,7 @@ class Interface
   end
 
   def request_station_name
-    puts "What is the name of station?"
+    puts "What is the name of station? Give at least 2 characters."
   end
 
   def station_created_message
@@ -220,6 +228,18 @@ class Interface
 
   def station_instances_number_message
     puts "The number of created station instances: #{Station.instances}"
+  end
+
+  def train_on_station
+    puts "Train is already on the station."
+  end
+
+  def train_not_on_station
+    puts "Train is not on the station."
+  end
+
+  def no_trains_on_station
+    puts "There are no trains on the station."
   end
 #-----------Route-------------
   def user_route_choice

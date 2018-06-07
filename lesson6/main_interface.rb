@@ -71,19 +71,28 @@ class MainInterface
                 @interface.if_all_stations_empty
               else
                 loop do
-                  route_name = @interface.user_given_route_name.capitalize
-                  break if route_name == "Stop"
-                  first_station_name = @interface.user_given_first_station_name.capitalize
-                  break if first_station_name == "Stop"
-                  first_station = Station.get_station_by_name(@all_stations, first_station_name)
-                  @interface.station_not_found_messsage if first_station.nil?
-                  last_station_name = @interface.user_given_last_station_name.capitalize
-                  break if last_station_name == "Stop"
-                  last_station = Station.get_station_by_name(@all_stations, last_station_name)
-                  @interface.station_not_found_messsage if last_station.nil?
-                  new_route = Route.new(route_name, first_station, last_station)
-                  @all_routes << new_route
-                  @interface.route_created_message
+                  attempt = 0
+                  begin
+                    route_name = @interface.user_given_route_name.capitalize
+                    break if route_name == "Stop"
+                    attempt += 1
+                    first_station_name = @interface.user_given_first_station_name.capitalize
+                    break if first_station_name == "Stop"
+                    first_station = Station.get_station_by_name(@all_stations, first_station_name)
+                    @interface.station_not_found_messsage if first_station.nil?
+                    last_station_name = @interface.user_given_last_station_name.capitalize
+                    break if last_station_name == "Stop"
+                    last_station = Station.get_station_by_name(@all_stations, last_station_name)
+                    @interface.station_not_found_messsage if last_station.nil?
+                    new_route = Route.new(route_name, first_station, last_station)
+                    @all_routes << new_route
+                    @interface.route_created_message
+                  rescue Exception => e
+                    @interface.print_exception(e)
+                  retry if attempt < 3
+                  ensure
+                    @interface.attempt_number(attempt)
+                  end
                 end
               end
           when '2'
@@ -263,7 +272,7 @@ class MainInterface
                 when "cargo"
                   CargoCarriage.new
                 else
-                  puts "Carriage type doesn't exist." 
+                  @interface.type_not_exist 
                 end
                 @all_carriages << new_carriage
                 new_carriage.company_name = "RZD St.Peterburg"

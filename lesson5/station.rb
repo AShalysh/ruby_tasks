@@ -3,7 +3,6 @@ class Station
   attr_reader :name, :trains
 
   @@all_created_stations = []
-  NUMBER_FORMAT = /^[a-z0-9]{2, }$/i
 
   def self.all
     @@all_created_stations
@@ -20,7 +19,6 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
-    validate!
     @@all_created_stations << self
     register_instance
   end
@@ -29,13 +27,13 @@ class Station
     if !@trains.include?(train)
       @trains << train
     else
-      @interface.train_on_station
+      puts "Train is already on the station."
     end
   end
 
   def departure(train)
     if !@trains.include?(train)
-      @interface.train_not_on_station
+      puts "Train is not on the station."
     else
       @trains.delete(train)   
     end
@@ -51,20 +49,7 @@ class Station
 
   def display_all_trains
     @trains.each { |train| puts "#{train.num}" }
-    @interface.no_trains_on_station if @trains.empty?
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
-  end
-
-  protected
-  def validate!
-    raise "Name can't be nil" if name.nil?
-    raise "Name should be at least 2 symbols" if name.length < 2
-    raise "Name has invalid format" if name !~ NUMBER_FORMAT
+    puts "There are no trains on the station." if @trains.empty?
   end
 end
+

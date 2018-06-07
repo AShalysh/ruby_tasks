@@ -263,7 +263,7 @@ class Interface
   end
 
   def request_route_name
-    puts "What is the route name?"
+    puts "What is the route name? Give at least 2 characters."
   end
 
   def create_route_info_message
@@ -342,5 +342,9 @@ class Interface
 
   def carriage_company_name_message
     puts "The name of carriage manufacture company: "
+  end
+
+  def type_not_exist
+    puts "Carriage type doesn't exist."
   end
 end

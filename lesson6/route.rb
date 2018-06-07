@@ -3,6 +3,7 @@ class Route
   attr_reader :station_list, :name
 
   @@all_created_routes = []
+  NUMBER_FORMAT = /^[a-z0-9]{2,}$/i
 
   def self.all
     @@all_created_routes
@@ -18,6 +19,7 @@ class Route
 
   def initialize(name, first_station, last_station)
     @name = name
+    validate!
     @station_list = [first_station, last_station]
     register_instance
     @@all_created_routes << self
@@ -62,5 +64,19 @@ class Route
     else
       @station_list.each { |station| puts "#{station.name}" }
     end
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  protected
+  def validate!
+    raise "Name can't be nil" if name.nil?
+    raise "Name should be at least 2 characters" if name.length < 2
+    raise "Name has invalid format" if name !~ NUMBER_FORMAT
   end
 end

@@ -294,6 +294,22 @@ class Interface
     puts "Route not found."
   end
 
+  def station_included_in_route
+    puts "Station has been already included in the route."
+  end
+
+  def station_was_added
+    puts "#{station.name} was added."
+  end
+
+  def station_was_deleted
+    puts "#{station.name} was deleted."
+  end
+
+  def station_not_found
+    puts "Station is not found or it is a first/last one!"
+  end
+
 #-----------Carriage-------------
   def user_carriage_choice
     show_carriage_menu

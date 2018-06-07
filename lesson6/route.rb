@@ -36,9 +36,9 @@ class Route
   def add_station(station)
     if !@station_list.include?(station)
       @station_list.insert(-2, station)
-      puts "#{station.name} was added."
+      @interface.station_was_added
     else
-      puts "Station has been already included in the route."
+      @interface.station_included_in_route
     end
   end
 
@@ -46,9 +46,9 @@ class Route
     station = get_station_by_name(station_name)
     if station && (station.name != first_station.name || station.name != last_station.name)
       @station_list.delete(station)
-      puts "#{station.name} was deleted."
+      @interface.station_was_deleted
     else
-      puts "Station is not found or it is a first/last one!"  
+      @interface.station_not_found  
     end
   end
 
@@ -60,7 +60,7 @@ class Route
 
   def display_all_station_list
     if @station_list.empty?
-      puts "There are no stations."
+      @interface.no_stations_message
     else
       @station_list.each { |station| puts "#{station.name}" }
     end
@@ -78,5 +78,6 @@ class Route
     raise "Name can't be nil" if name.nil?
     raise "Name should be at least 2 characters" if name.length < 2
     raise "Name has invalid format" if name !~ NUMBER_FORMAT
+    #raise "First and Last station can not be the same" if first_station.eql? last_station
   end
 end

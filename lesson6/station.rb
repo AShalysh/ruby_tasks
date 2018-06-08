@@ -3,7 +3,7 @@ class Station
   attr_reader :name, :trains
 
   @@all_created_stations = []
-  NUMBER_FORMAT = /^[a-z0-9]{2,}$/i
+  NAME_FORMAT = /^[a-z0-9]{2,}$/i
 
   def self.all
     @@all_created_stations
@@ -65,6 +65,6 @@ class Station
   def validate!
     raise "Name can't be nil" if name.nil?
     raise "Name should be at least 2 characters" if name.length < 2
-    raise "Name has invalid format" if name !~ NUMBER_FORMAT
+    raise "Name has invalid format" if name !~ NAME_FORMAT
   end
 end

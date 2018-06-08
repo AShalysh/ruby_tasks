@@ -3,7 +3,7 @@ class Route
   attr_reader :station_list, :name
 
   @@all_created_routes = []
-  NUMBER_FORMAT = /^[a-z0-9]{2,}$/i
+  NAME_FORMAT = /^[a-z0-9]{2,}$/i
 
   def self.all
     @@all_created_routes
@@ -19,8 +19,8 @@ class Route
 
   def initialize(name, first_station, last_station)
     @name = name
-    validate!
     @station_list = [first_station, last_station]
+    validate!
     register_instance
     @@all_created_routes << self
   end
@@ -77,7 +77,9 @@ class Route
   def validate!
     raise "Name can't be nil" if name.nil?
     raise "Name should be at least 2 characters" if name.length < 2
-    raise "Name has invalid format" if name !~ NUMBER_FORMAT
-    #raise "First and Last station can not be the same" if first_station.eql? last_station
+    raise "Name has invalid format" if name !~ NAME_FORMAT
+    raise "First and Last station can not be the same" if first_station.eql? last_station
+    raise "First station is not an object of class Station" if (first_station.instance_of? Station.class) == false
+    raise "Last station is not an object of class Station" if (last_station.instance_of? Station.class) == false
   end
 end

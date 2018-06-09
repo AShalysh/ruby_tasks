@@ -78,8 +78,8 @@ class Route
     raise "Name can't be nil" if name.nil?
     raise "Name should be at least 2 characters" if name.length < 2
     raise "Name has invalid format" if name !~ NAME_FORMAT
-    raise "First and Last station can not be the same" if first_station.eql? last_station
-    raise "First station is not an object of class Station" if (first_station.instance_of? Station.class) == false
-    raise "Last station is not an object of class Station" if (last_station.instance_of? Station.class) == false
+    raise "First and Last station can not be the same or/and both must belong to class Station" if first_station == last_station
+    raise "First station is not an object of class Station" if !first_station.is_a?(Station)
+    raise "Last station is not an object of class Station" if !last_station.is_a?(Station)
   end
 end

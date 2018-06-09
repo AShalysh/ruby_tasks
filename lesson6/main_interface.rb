@@ -7,11 +7,11 @@ class MainInterface
     @all_routes = []
     @all_carriages = []
     #@attempt = 0
-  end 
+  end
 
   def start
      
-    loop do 
+    loop do
       case @interface.user_main_menu_choice
       when '1'
         loop do
@@ -120,14 +120,14 @@ class MainInterface
                     chosen_route.display_all_station_list
                   end
                 end
-              end     
+              end
           when '3'
             @interface.all_created_routes_message
             Route.display_all_routes(@all_routes)
             if @all_routes.empty?
               @interface.if_all_routes_empty
             else
-              loop do 
+              loop do
                 @interface.stations_to_out_route_info_message
                 route_name = @interface.user_given_route_name.capitalize
                 break if route_name == "Stop"
@@ -176,9 +176,9 @@ class MainInterface
                 retry if attempt < 3
               ensure
                 @interface.attempt_number(attempt)
-              end  
+              end
             end
-          when '2'     
+          when '2'
             @interface.all_created_trains_message
             Train.display_all_trains(@all_trains)
             @interface.all_created_routes_message
@@ -246,10 +246,10 @@ class MainInterface
             exit
           else
             @interface.not_valid_input_message
-          end 
+          end
         end
       when '4'
-        loop do 
+        loop do
           case @interface.user_carriage_choice
           when '1'
             number_of_carriages = @interface.user_carriage_number_choice.to_i
@@ -272,7 +272,7 @@ class MainInterface
                 when "cargo"
                   CargoCarriage.new
                 else
-                  @interface.type_not_exist 
+                  @interface.type_not_exist
                 end
                 @all_carriages << new_carriage
                 new_carriage.company_name = "RZD St.Peterburg"

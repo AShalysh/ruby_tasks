@@ -16,7 +16,7 @@ class Train
     else
       #puts "Train type doesn't exist." 
       raise TypeError, 'Type of train is incorrect'
-    end 
+    end
   end
 
   def self.display_all_trains(all_trains)
@@ -42,7 +42,7 @@ class Train
     validate!
     @@all_created_trains << self
     @@all_created_trains_hash[num.to_sym] = self
-    register_instance  
+    register_instance
   end
 
   def increase_speed(value)
@@ -52,7 +52,7 @@ class Train
   def decrease_speed(value)
     if value > speed
       @speed = 0
-    else   
+    else
       @speed -= value
     end
   end
@@ -72,9 +72,9 @@ class Train
   end
 
   def remove_carriage(carriage_position)
-    if @speed == 0 
+    if @speed == 0
       @carriages.delete_at(carriage_position - 1)
-      @interface.carriage_removed 
+      @interface.carriage_removed
     else
       @interface.can_not_remove_carriage
     end
@@ -83,11 +83,11 @@ class Train
   def current_station
     if @route.nil?
       @interface.no_route_set
-    else  
-      puts @route.station_list[@current_station_index].name 
+    else
+      puts @route.station_list[@current_station_index].name
       @route.station_list[@current_station_index]
     end
-  end 
+  end
 
   def set_route(route)
     @route = route
@@ -123,7 +123,7 @@ class Train
     if not_first_station
       @route.station_list[@current_station_index - 1]
     else
-      @interface.no_previous_station  
+      @interface.no_previous_station
     end
   end
 

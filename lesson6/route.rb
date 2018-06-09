@@ -48,7 +48,7 @@ class Route
       @station_list.delete(station)
       @interface.station_was_deleted
     else
-      @interface.station_not_found  
+      @interface.station_not_found
     end
   end
 

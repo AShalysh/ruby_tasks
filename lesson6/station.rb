@@ -37,7 +37,7 @@ class Station
     if !@trains.include?(train)
       @interface.train_not_on_station
     else
-      @trains.delete(train)   
+      @trains.delete(train)
     end
   end
 

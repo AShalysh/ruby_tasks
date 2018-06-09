@@ -117,7 +117,7 @@ class Interface
   end
 
   def can_not_remove_carriage
-    puts "Can not remove the carriage because: " 
+    puts "Can not remove the carriage because: "
     puts "1) Your speed > 0; 2) Train does not have this carriage."
   end
 
@@ -258,7 +258,7 @@ class Interface
 
   def user_given_route_name
     exit_loop_message
-    request_route_name 
+    request_route_name
     gets.chomp
   end
 

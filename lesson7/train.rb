@@ -135,13 +135,13 @@ class Train
     end
   end
    # -------block task---------
-  def display_train_carriages(array)
-    for element in array
-      yield element
-    end
-  end
+  # def display_train_carriages(array)
+  #   for element in array
+  #     yield element
+  #   end
+  # end
   
-  display_train_carriages(@carriages) { |carriage| puts carriage }
+  # display_train_carriages(@carriages) { |carriage| puts carriage }
   #-----end of task ------
   def valid?
     validate!

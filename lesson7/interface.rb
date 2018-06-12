@@ -164,7 +164,8 @@ class Interface
     puts "-- Type '1' to create a station(s)."
     puts "-- Type '2' to display the list of all stations/show number of instances."
     puts "-- Type '3' to display the list of all trains on the station."
-    puts "-- Type '4' to go to the main menu."
+    puts "-- Type '4' to display the list of all trains on the station by using BLOCK."
+    puts "-- Type '5' to go to the main menu."
     puts "-- Type '0' to exit the program."
   end
 

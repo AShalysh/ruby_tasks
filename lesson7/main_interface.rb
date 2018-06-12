@@ -52,6 +52,18 @@ class MainInterface
               end
             end
           when '4'
+            loop do
+              station_name = @interface.user_given_station_name.capitalize
+              break if station_name == "Stop"
+              chosen_station = Station.get_station_by_name(@all_stations, station_name)
+              if chosen_station.nil?
+                @interface.station_not_found_messsage
+              else
+                @interface.all_trains_message
+                chosen_station.display_all_trains_by_block
+              end
+            end
+          when '5'
             break
           when '0'
             exit

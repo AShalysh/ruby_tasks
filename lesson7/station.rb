@@ -54,13 +54,13 @@ class Station
     @interface.no_trains_on_station if @trains.empty?
   end
   # -------block task---------
-  def display_all_trains_on_station(array)
-    for element in array
+  def display_all_trains_by_block
+    for element in @trains
       yield element
     end
   end
   
-  display_all_trains_on_station(@trains) { |train| puts train }
+  display_all_trains_by_block { |train| puts train }
   #-----end of task ------
   def valid?
     validate!

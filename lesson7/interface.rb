@@ -42,7 +42,9 @@ class Interface
     puts "-- Type '3' to move a train one station ahead."
     puts "-- Type '4' to move a train one station back."
     puts "-- Type '5' to show all created trains/show number of instances."
-    puts "-- Type '6' to go to the main menu."
+    puts "-- Type '6' to book a seat, show the number of free and booked seats at the chosen carriage."
+    puts "-- Type '7' to display all carriages for chosen train by using BLOCK."
+    puts "-- Type '8' to go to the main menu."
     puts "-- Type '0' to exit the program."
   end
 
@@ -151,6 +153,15 @@ class Interface
 
   def non_cargo_carriage
     puts "Can't add non cargo carriage to cargo train."
+  end
+
+  def user_given_carriage_num
+    request_carriage_number
+    gets.chomp.to_i
+  end
+
+  def request_carriage_number
+    puts "Give the carriage number to display free places: "
   end
 
 #-----------Station-------------
@@ -334,6 +345,24 @@ class Interface
     puts "How many carriages do you want to add to your train?"
   end
 
+  def user_given_seat_num
+    request_seat_num
+    gets.chomp.to_i
+  end
+
+  def request_seat_num
+    puts "Provide the number of passenger seats: "
+  end
+
+  def user_given_volume_num
+    request_volume_num
+    gets.chomp.to_i
+  end
+
+  def request_volume_num
+    puts "Provide the volume number: "
+  end
+
   def user_carriage_remove_number
     remove_carriage_message
     gets.chomp
@@ -363,5 +392,33 @@ class Interface
 
   def type_not_exist
     puts "Carriage type doesn't exist."
+  end
+
+  def total_seat_number
+    puts "Total number of seats:"
+  end
+
+  def show_quantity
+    puts "Free quantity for every carriage (starting from the first one):"
+  end
+
+  def book_seat_question
+    puts "To book a seat one by one, type: yes. To stop booking, type: stop."
+  end
+
+  def free_seats
+    puts "Free seats:"
+  end
+
+  def booked_seats
+    puts "Booked seats:"
+  end
+
+  def seat_is_booked
+    puts "Your seat is booked."
+  end
+
+  def no_seats_left
+    puts "There are no free seats left."
   end
 end

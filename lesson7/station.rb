@@ -17,9 +17,10 @@ class Station
     all_stations.find { |station| station.name == station_name }
   end
 
-  def initialize(name)
+  def initialize(name, interface)
     @name = name
     @trains = []
+    @interface = interface
     validate!
     @@all_created_stations << self
     register_instance
@@ -59,8 +60,6 @@ class Station
       yield element
     end
   end
-  
-  display_all_trains_by_block { |train| puts train }
   #-----end of task ------
   def valid?
     validate!

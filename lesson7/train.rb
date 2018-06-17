@@ -7,14 +7,13 @@ class Train
   @@all_created_trains_hash = {}
   NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
 
-  def self.for(train_name,train_type)
+  def self.for(train_name, train_type, interface)
     case train_type
     when "pass"
-      PassengerTrain.new(train_name)
+      PassengerTrain.new(train_name, interface)
     when "cargo"
-      CargoTrain.new(train_name)
+      CargoTrain.new(train_name, interface)
     else
-      #puts "Train type doesn't exist." 
       raise TypeError, 'Type of train is incorrect'
     end
   end
@@ -35,10 +34,11 @@ class Train
     all_trains.find { |train| train.num == train_name}
   end
 
-  def initialize(num)
+  def initialize(num, interface)
     @num = num
     @speed = 0
     @carriages = []
+    @interface = interface
     validate!
     @@all_created_trains << self
     @@all_created_trains_hash[num.to_sym] = self
@@ -134,12 +134,16 @@ class Train
       @interface.no_next_station
     end
   end
+
+  def get_carriage_by_num(carriage_num)
+    @carriages[carriage_num - 1]
+  end
    # -------block task---------
-  # def display_train_carriages(array)
-  #   for element in array
-  #     yield element
-  #   end
-  # end
+  def display_all_carriages_by_block
+    for element in @carriages
+      yield element
+    end
+  end
   
   # display_train_carriages(@carriages) { |carriage| puts carriage }
   #-----end of task ------

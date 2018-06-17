@@ -22,7 +22,7 @@ class MainInterface
                 station_name = @interface.user_given_station_name.capitalize
                 break if station_name == "Stop"
                 attempt += 1
-                new_station = Station.new(station_name)
+                new_station = Station.new(station_name, @interface)
                 @all_stations << new_station
                 @interface.station_created_message
               rescue Exception => e
@@ -60,7 +60,7 @@ class MainInterface
                 @interface.station_not_found_messsage
               else
                 @interface.all_trains_message
-                chosen_station.display_all_trains_by_block
+                chosen_station.display_all_trains_by_block { |train| puts train.num }
               end
             end
           when '5'
@@ -95,7 +95,7 @@ class MainInterface
                     break if last_station_name == "Stop"
                     last_station = Station.get_station_by_name(@all_stations, last_station_name)
                     @interface.station_not_found_messsage if last_station.nil?
-                    new_route = Route.new(route_name, first_station, last_station)
+                    new_route = Route.new(route_name, first_station, last_station, @interface)
                     @all_routes << new_route
                     @interface.route_created_message
                   rescue Exception => e
@@ -124,7 +124,7 @@ class MainInterface
                     chosen_route.display_all_station_list
                     station_name = @interface.user_given_station_name.capitalize
                     break if station_name == "Stop"
-                    new_station = Station.new(station_name)
+                    new_station = Station.new(station_name, @interface)
                     @all_stations << new_station
                     chosen_route.add_station(new_station)
                     @interface.show_current_station_list
@@ -176,7 +176,7 @@ class MainInterface
                 break if train_name == "Stop"
                 attempt += 1
                 train_type = @interface.user_given_train_type
-                new_train = Train.for(train_name, train_type)
+                new_train = Train.for(train_name, train_type, @interface)
                 new_train.company_name = "RZD Moscow"
                 @all_trains << new_train
                 @interface.train_created_message
@@ -252,6 +252,37 @@ class MainInterface
             end
             @interface.train_instances_number_message
           when '6'
+            @interface.all_created_trains_message
+            Train.display_all_trains(@all_trains)
+            train_name = @interface.user_given_train_name.capitalize
+            break if train_name == "Stop"
+            chosen_train = Train.get_train_by_name(@all_trains, train_name)
+            @interface.total_num_carriages_message
+            chosen_train.total_number_carriages
+            carriage_num = @interface.user_given_carriage_num
+            chosen_carriage = chosen_train.get_carriage_by_num(carriage_num)
+            @interface.total_seat_number
+            chosen_carriage.total_quantity
+            @interface.free_seats
+            chosen_carriage.free_seats_number
+            chosen_carriage.book_seat
+            @interface.free_seats
+            chosen_carriage.free_seats_number
+            @interface.booked_seats
+            chosen_carriage.booked_seats_number
+          when '7'
+            loop do
+              train_name = @interface.user_given_train_name.capitalize
+              break if train_name == "Stop"
+              chosen_train = Train.get_train_by_name(@all_trains, train_name)
+              if chosen_train.nil?
+                @interface.train_not_found_messsage
+              else
+                @interface.show_quantity
+                chosen_train.display_all_carriages_by_block { |carriage| puts carriage.quantity }
+              end
+            end
+          when '8'
             break
           when '0'
             exit
@@ -279,9 +310,11 @@ class MainInterface
                 break if carriage_type.downcase ==  "stop"
                 new_carriage = case carriage_type
                 when "pass"
-                  PassengerCarriage.new
+                  quantity = @interface.user_given_seat_num
+                  PassengerCarriage.new(quantity, @interface)
                 when "cargo"
-                  CargoCarriage.new
+                  quantity = @interface.user_given_volume_num
+                  CargoCarriage.new(quantity, @interface)
                 else
                   @interface.type_not_exist
                 end

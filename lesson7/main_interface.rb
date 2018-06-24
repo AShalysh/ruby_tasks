@@ -261,15 +261,53 @@ class MainInterface
             chosen_train.total_number_carriages
             carriage_num = @interface.user_given_carriage_num
             chosen_carriage = chosen_train.get_carriage_by_num(carriage_num)
-            @interface.total_seat_number
-            chosen_carriage.total_quantity
-            @interface.free_seats
-            chosen_carriage.free_seats_number
-            chosen_carriage.book_seat
-            @interface.free_seats
-            chosen_carriage.free_seats_number
-            @interface.booked_seats
-            chosen_carriage.booked_seats_number
+            #logic for passenger train
+            if chosen_train.is_a?(PassengerTrain)
+              @interface.total_seat_number
+              chosen_carriage.total_quantity
+              @interface.free_seats
+              chosen_carriage.free_seats_number
+              loop do
+                choice = @interface.book_seat_question.capitalize
+                break if choice == "Stop"
+                if chosen_carriage.free_seats_number > 0
+                  chosen_carriage.book_seat
+                  @interface.seat_is_booked
+                  @interface.free_seats
+                  chosen_carriage.free_seats_number
+                  @interface.booked_seats
+                  chosen_carriage.booked_seats_number
+                else
+                  @interface.no_seats_left
+                  break
+                end
+              end
+              @interface.free_seats
+              chosen_carriage.free_seats_number
+              @interface.booked_seats
+              chosen_carriage.booked_seats_number 
+            else
+              #logic for cargo train
+              loop do
+                @interface.total_volume_number
+                chosen_carriage.total_quantity
+                @interface.free_volume
+                chosen_carriage.free_volume_number
+                given_volume = @interface.book_volume_question.to_i
+                break if given_volume == 0
+                if given_volume <= chosen_carriage.free_volume_number
+                  chosen_carriage.book_volume(given_volume)
+                  @interface.volume_is_booked
+                  @interface.free_volume
+                  chosen_carriage.free_volume_number
+                  @interface.booked_volume
+                  chosen_carriage.booked_volume_number
+                else
+                  @interface.left_volume_num
+                  chosen_carriage.free_volume_number
+                end
+              end
+            end
           when '7'
             loop do
               train_name = @interface.user_given_train_name.capitalize
@@ -279,7 +317,7 @@ class MainInterface
                 @interface.train_not_found_messsage
               else
                 @interface.show_quantity
-                chosen_train.display_all_carriages_by_block { |carriage| puts carriage.quantity }
+                chosen_train.display_all_carriages_by_block { |carriage| puts carriage.carriage_number }
               end
             end
           when '8'
@@ -307,14 +345,15 @@ class MainInterface
                 i += 1
                 break if i > number_of_carriages
                 carriage_type = @interface.user_given_carriage_type
+                carriage_number = @interface.user_given_carriage_number
                 break if carriage_type.downcase ==  "stop"
                 new_carriage = case carriage_type
                 when "pass"
                   quantity = @interface.user_given_seat_num
-                  PassengerCarriage.new(quantity, @interface)
+                  PassengerCarriage.new(quantity, carriage_number, @interface)
                 when "cargo"
                   quantity = @interface.user_given_volume_num
-                  CargoCarriage.new(quantity, @interface)
+                  CargoCarriage.new(quantity, carriage_number, @interface)
                 else
                   @interface.type_not_exist
                 end

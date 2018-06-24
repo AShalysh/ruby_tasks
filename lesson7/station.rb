@@ -56,9 +56,11 @@ class Station
   end
   # -------block task---------
   def display_all_trains_by_block
-    for element in @trains
-      yield element
-    end
+    # for element in @trains
+    #   yield element
+    # end
+    @trains.each 
+    yield
   end
   #-----end of task ------
   def valid?

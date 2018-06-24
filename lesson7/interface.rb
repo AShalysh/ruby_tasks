@@ -42,7 +42,7 @@ class Interface
     puts "-- Type '3' to move a train one station ahead."
     puts "-- Type '4' to move a train one station back."
     puts "-- Type '5' to show all created trains/show number of instances."
-    puts "-- Type '6' to book a seat, show the number of free and booked seats at the chosen carriage."
+    puts "-- Type '6' to book a seat/volume, show the number of free and booked seats/volume at the chosen carriage."
     puts "-- Type '7' to display all carriages for chosen train by using BLOCK."
     puts "-- Type '8' to go to the main menu."
     puts "-- Type '0' to exit the program."
@@ -382,6 +382,15 @@ class Interface
     puts "Provide the type of carriage for every carriage. Type pass or cargo: "
   end
 
+  def user_given_carriage_number
+    request_carriage_num
+    gets.chomp
+  end
+
+  def request_carriage_num
+    puts "Provide the carriage number:"
+  end
+
   def total_num_carriages_message
     puts "Total number of carriages that are attached to this train: "
   end
@@ -398,27 +407,65 @@ class Interface
     puts "Total number of seats:"
   end
 
+  def total_volume_number
+    puts "Total volume:"
+  end
+
   def show_quantity
     puts "Free quantity for every carriage (starting from the first one):"
   end
 
   def book_seat_question
+    request_book_seat
+    gets.chomp  
+  end
+
+  def request_book_seat
     puts "To book a seat one by one, type: yes. To stop booking, type: stop."
+  end
+
+  def book_volume_question
+    request_book_volume
+    gets.chomp  
+  end
+
+  def request_book_volume
+    puts "Provide volume(number) to book or type 0(zero) to exit: "
   end
 
   def free_seats
     puts "Free seats:"
   end
 
+  def free_volume
+    puts "Free volume:"
+  end
+
+  def free_volume
+    puts "Free volume:"
+  end
+
   def booked_seats
     puts "Booked seats:"
+  end
+
+  def booked_volume
+    puts "Booked volume:"
   end
 
   def seat_is_booked
     puts "Your seat is booked."
   end
 
+  def volume_is_booked
+    puts "Your volume is booked."
+  end
+
   def no_seats_left
     puts "There are no free seats left."
+  end
+
+  def left_volume_num
+    puts "Number of volume left: "
   end
 end

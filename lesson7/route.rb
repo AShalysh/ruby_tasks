@@ -17,9 +17,10 @@ class Route
     all_routes.each { |route| puts "#{route.name}" }
   end
 
-  def initialize(name, first_station, last_station)
+  def initialize(name, first_station, last_station, interface)
     @name = name
     @station_list = [first_station, last_station]
+    @interface = interface
     validate!
     register_instance
     @@all_created_routes << self

@@ -56,11 +56,10 @@ class Station
   end
   # -------block task---------
   def display_all_trains_by_block
-    # for element in @trains
-    #   yield element
-    # end
-    @trains.each 
-    yield
+    @interface.no_trains_on_station if @trains.empty?
+    @trains.each do |train| 
+      yield(train)
+    end
   end
   #-----end of task ------
   def valid?

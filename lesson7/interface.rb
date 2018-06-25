@@ -164,6 +164,14 @@ class Interface
     puts "Give the carriage number to display free places: "
   end
 
+  def train_name
+    puts "Name(number) of the train: "
+  end
+
+  def train_carriages
+    puts "Train carriages: "
+  end
+
 #-----------Station-------------
   def user_station_choice
     show_station_menu
@@ -175,7 +183,7 @@ class Interface
     puts "-- Type '1' to create a station(s)."
     puts "-- Type '2' to display the list of all stations/show number of instances."
     puts "-- Type '3' to display the list of all trains on the station."
-    puts "-- Type '4' to display the list of all trains on the station by using BLOCK."
+    puts "-- Type '4' to display the list of all trains on the station and carriage data by using BLOCK."
     puts "-- Type '5' to go to the main menu."
     puts "-- Type '0' to exit the program."
   end
@@ -311,11 +319,11 @@ class Interface
   end
 
   def station_was_added
-    puts "#{station.name} was added."
+    puts "#{Station.name} was added."
   end
 
   def station_was_deleted
-    puts "#{station.name} was deleted."
+    puts "#{Station.name} was deleted."
   end
 
   def station_not_found
@@ -441,10 +449,6 @@ class Interface
     puts "Free volume:"
   end
 
-  def free_volume
-    puts "Free volume:"
-  end
-
   def booked_seats
     puts "Booked seats:"
   end
@@ -467,5 +471,13 @@ class Interface
 
   def left_volume_num
     puts "Number of volume left: "
+  end
+
+  def carriage_number
+    puts "Carriage number: "
+  end
+
+  def carriage_type
+    puts "Carriage type: "
   end
 end

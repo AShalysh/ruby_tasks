@@ -1,7 +1,7 @@
 class Train
   include InstanceCounter
   include Company
-  attr_reader :num, :speed, :route
+  attr_reader :num, :speed, :route, :carriages
 
   @@all_created_trains = []
   @@all_created_trains_hash = {}

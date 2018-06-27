@@ -1,7 +1,7 @@
 class Train
   include InstanceCounter
   include Company
-  attr_reader :num, :speed, :route, :carriages
+  attr_reader :num, :speed, :route, :carriages, :train_type
 
   @@all_created_trains = []
   @@all_created_trains_hash = {}
@@ -38,6 +38,7 @@ class Train
     @num = num
     @speed = 0
     @carriages = []
+    @train_type = train_type
     @interface = interface
     validate!
     @@all_created_trains << self
@@ -140,12 +141,13 @@ class Train
   end
    # -------block task---------
   def display_all_carriages_by_block
-    for element in @carriages
-      yield element
+    @carriages.each do |carriage| 
+      yield(carriage)
     end
   end
-  
-  # display_train_carriages(@carriages) { |carriage| puts carriage }
+    # for element in @carriages
+    #   yield element
+    # end
   #-----end of task ------
   def valid?
     validate!

@@ -12,85 +12,102 @@ class MainInterface
     loop do
       case @interface.user_main_menu_choice
       when '1'
-        loop do
-          case @interface.user_station_choice
-          when '1'
-            create_stations
-          when '2'
-            show_all_stations_num_instances
-          when '3'
-            show_trains_on_station
-          when '4'
-            show_trains_on_station_block
-          when '5'
-            break
-          when '0'
-            exit
-          else
-            @interface.not_valid_input_message
-          end
-        end
+        station_choice
       when '2'
-        loop do
-          case @interface.user_route_choice
-          when '1'
-            create_routes
-          when '2'
-            add_stations_to_route
-          when '3'
-            delete_stations_from_route
-          when '4'
-            break
-          when '0'
-            exit
-          else
-            @interface.not_valid_input_message
-          end
-        end
+        route_choice
       when '3'
-        loop do
-          case @interface.user_train_choice
-          when '1'
-            create_trains
-          when '2'
-            set_route
-          when '3'
-            move_train_ahead
-          when '4'
-            move_train_back
-          when '5'
-            show_all_trains_num_instances
-          when '6'
-            book_seat_volume
-          when '7'
-            show_train_carriages_block
-          when '8'
-            break
-          when '0'
-            exit
-          else
-            @interface.not_valid_input_message
-          end
-        end
+        train_choice
       when '4'
-        loop do
-          case @interface.user_carriage_choice
-          when '1'
-            create_carriages
-          when '2'
-            remove_carriage
-          when '3'
-            break
-          when '0'
-            exit
-          else
-            @interface.not_valid_input_message
-          end
-        end
+        carriage_choice
       when '0'
-          exit
+        exit
       else
-          @interface.not_valid_input_message
+        @interface.not_valid_input_message
+      end
+    end
+  end
+#---------------Start Method----------
+#--when "1"
+  def station_choice
+    loop do
+      case @interface.user_station_choice
+      when '1'
+        create_stations
+      when '2'
+        show_all_stations_num_instances
+      when '3'
+        show_trains_on_station
+      when '4'
+        show_trains_on_station_block
+      when '5'
+        break
+      when '0'
+        exit
+      else
+        @interface.not_valid_input_message
+      end
+    end
+  end
+#--when "2"
+  def route_choice
+    loop do
+      case @interface.user_route_choice
+      when '1'
+        create_routes
+      when '2'
+        add_stations_to_route
+      when '3'
+        delete_stations_from_route
+      when '4'
+        break
+      when '0'
+        exit
+      else
+        @interface.not_valid_input_message
+      end
+    end
+  end
+#--when "3"
+  def train_choice
+    loop do
+      case @interface.user_train_choice
+      when '1'
+        create_trains
+      when '2'
+        set_route
+      when '3'
+        move_train_ahead
+      when '4'
+        move_train_back
+      when '5'
+        show_all_trains_num_instances
+      when '6'
+        book_seat_volume
+      when '7'
+        show_train_carriages_block
+      when '8'
+        break
+      when '0'
+        exit
+      else
+        @interface.not_valid_input_message
+      end
+    end
+  end
+#--when "4"
+  def carriage_choice
+    loop do
+      case @interface.user_carriage_choice
+      when '1'
+        create_carriages
+      when '2'
+        remove_carriage
+      when '3'
+        break
+      when '0'
+        exit
+      else
+        @interface.not_valid_input_message
       end
     end
   end
@@ -148,29 +165,29 @@ class MainInterface
       else
         @interface.all_trains_message
         chosen_station.display_all_trains_by_block do |train| 
-          @interface.train_name
-          puts train.num
-          @interface.train_carriages
-          puts train.carriages
+          @interface.train_name(train)
+          @interface.train_carriages(train)
           train.carriages.each do |carriage|
-            @interface.carriage_number
-            puts carriage.carriage_number
-            @interface.carriage_type
-            puts carriage.class
-            if carriage.is_a?(CargoCarriage)
-              @interface.free_volume
-              carriage.free_volume_number
-              @interface.booked_volume
-              carriage.booked_volume_number
-            else
-              @interface.free_seats
-              carriage.free_seats_number
-              @interface.booked_seats
-              carriage.booked_seats_number
-            end
+            @interface.carriage_number(carriage)
+            @interface.carriage_type(carriage)
+            if_cargo_or_pass_carriage_info(carriage)
           end
         end
       end
+    end
+  end
+
+  def if_cargo_or_pass_carriage_info(carriage)
+    if carriage.is_a?(CargoCarriage)
+      @interface.free_volume
+      carriage.free_volume_number
+      @interface.booked_volume
+      carriage.booked_volume_number
+    else
+      @interface.free_seats
+      carriage.free_seats_number
+      @interface.booked_seats
+      carriage.booked_seats_number
     end
   end
 #---------------Routes----------
@@ -208,6 +225,7 @@ class MainInterface
       end
     end
   end
+
 #--when "2"
   def add_stations_to_route
     @interface.all_created_routes_message
@@ -298,21 +316,25 @@ class MainInterface
       @interface.if_all_routes_empty
       @interface.if_all_trains_empty
     else
-      loop do
-        train_name = @interface.user_given_train_name.capitalize
-        break if train_name == "Stop"
-        chosen_train = Train.get_train_by_name(@all_trains, train_name)
-        route_name = @interface.user_given_route_name.capitalize
-        break if route_name == "Stop"
-        chosen_route = Route.get_route_by_name(@all_routes, route_name)
-        if chosen_route.nil?
-          @interface.route_not_found_messsage
-        else
-          chosen_train.set_route(chosen_route)
-          @interface.route_set_message
-          @interface.current_station
-          chosen_train.current_station.name
-        end
+      set_route_loop
+    end
+  end
+
+  def set_route_loop
+    loop do
+      train_name = @interface.user_given_train_name.capitalize
+      break if train_name == "Stop"
+      chosen_train = Train.get_train_by_name(@all_trains, train_name)
+      route_name = @interface.user_given_route_name.capitalize
+      break if route_name == "Stop"
+      chosen_route = Route.get_route_by_name(@all_routes, route_name)
+      if chosen_route.nil?
+        @interface.route_not_found_messsage
+      else
+        chosen_train.set_route(chosen_route)
+        @interface.route_set_message
+        @interface.current_station
+        chosen_train.current_station.name
       end
     end
   end
@@ -362,7 +384,6 @@ class MainInterface
     @interface.all_created_trains_message
     Train.display_all_trains(@all_trains)
     train_name = @interface.user_given_train_name.capitalize
-    #break if train_name == "Stop"
     chosen_train = Train.get_train_by_name(@all_trains, train_name)
     @interface.total_num_carriages_message
     chosen_train.total_number_carriages
@@ -374,21 +395,7 @@ class MainInterface
       chosen_carriage.total_quantity
       @interface.free_seats
       chosen_carriage.free_seats_number
-      loop do
-        choice = @interface.book_seat_question.capitalize
-        break if choice == "Stop"
-        if chosen_carriage.free_seats_number > 0
-          chosen_carriage.book_seat
-          @interface.seat_is_booked
-          @interface.free_seats
-          chosen_carriage.free_seats_number
-          @interface.booked_seats
-          chosen_carriage.booked_seats_number
-        else
-          @interface.no_seats_left
-          break
-        end
-      end
+      book_seat
       @interface.free_seats
       chosen_carriage.free_seats_number
       @interface.booked_seats
@@ -402,31 +409,49 @@ class MainInterface
         chosen_carriage.free_volume_number
         given_volume = @interface.book_volume_question.to_i
         break if given_volume == 0
-        if given_volume <= chosen_carriage.free_volume_number
-          chosen_carriage.book_volume(given_volume)
-          @interface.volume_is_booked
-          @interface.free_volume
-          chosen_carriage.free_volume_number
-          @interface.booked_volume
-          chosen_carriage.booked_volume_number
-        else
-          @interface.left_volume_num
-          chosen_carriage.free_volume_number
-        end
+        book_volume(given_volume)
       end
+    end
+  end
+
+  def book_seat
+    loop do
+      choice = @interface.book_seat_question.capitalize
+      break if choice == "Stop"
+      if chosen_carriage.free_seats_number > 0
+        chosen_carriage.book_seat
+        @interface.seat_is_booked
+        @interface.free_seats
+        chosen_carriage.free_seats_number
+        @interface.booked_seats
+        chosen_carriage.booked_seats_number
+      else
+        @interface.no_seats_left
+        break
+      end
+    end
+  end
+
+  def book_volume(given_volume)
+    if given_volume <= chosen_carriage.free_volume_number
+      chosen_carriage.book_volume(given_volume)
+      @interface.volume_is_booked
+      @interface.free_volume
+      chosen_carriage.free_volume_number
+      @interface.booked_volume
+      chosen_carriage.booked_volume_number
+    else
+      @interface.left_volume_num
+      chosen_carriage.free_volume_number
     end
   end
 #--when "7"
   def show_train_carriages_block
-    loop do
-      train_name = @interface.user_given_train_name.capitalize
-      break if train_name == "Stop"
-      chosen_train = Train.get_train_by_name(@all_trains, train_name)
-      if chosen_train.nil?
-        @interface.train_not_found_messsage
-      else
-        @interface.show_quantity
-        chosen_train.display_all_carriages_by_block { |carriage| puts carriage.carriage_number }
+    Station.display_trains_every_station do |station|
+      @interface.station_name(station)
+      station.trains.each do |train|
+        @interface.train_name(train)
+        @interface.total_num_carriages(train)
       end
     end
   end

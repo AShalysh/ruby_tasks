@@ -61,6 +61,12 @@ class Station
       yield(train)
     end
   end
+
+  def self.display_trains_every_station
+    @@all_created_stations.each do |station|
+      yield(station)
+    end
+  end
   #-----end of task ------
   def valid?
     validate!

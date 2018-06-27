@@ -43,7 +43,7 @@ class Interface
     puts "-- Type '4' to move a train one station back."
     puts "-- Type '5' to show all created trains/show number of instances."
     puts "-- Type '6' to book a seat/volume, show the number of free and booked seats/volume at the chosen carriage."
-    puts "-- Type '7' to display all carriages for chosen train by using BLOCK."
+    puts "-- Type '7' to display all trains for every station by using BLOCK."
     puts "-- Type '8' to go to the main menu."
     puts "-- Type '0' to exit the program."
   end
@@ -164,12 +164,16 @@ class Interface
     puts "Give the carriage number to display free places: "
   end
 
-  def train_name
-    puts "Name(number) of the train: "
+  def train_name(train)
+    puts "Name(number) of the train: #{train.num}"
   end
 
-  def train_carriages
-    puts "Train carriages: "
+  def train_type(train)
+    puts "Train type: #{train.train_type}"
+  end
+
+  def train_carriages(train)
+    puts "Train carriages: #{train.carriages}"
   end
 
 #-----------Station-------------
@@ -260,6 +264,10 @@ class Interface
 
   def no_trains_on_station
     puts "There are no trains on the station."
+  end
+
+  def station_name(station)
+    puts "Station name: #{station.name}"
   end
 #-----------Route-------------
   def user_route_choice
@@ -473,11 +481,15 @@ class Interface
     puts "Number of volume left: "
   end
 
-  def carriage_number
-    puts "Carriage number: "
+  def carriage_number(carriage)
+    puts "Carriage number: #{carriage.carriage_number}"
   end
 
-  def carriage_type
-    puts "Carriage type: "
+  def carriage_type(carriage)
+    puts "Carriage type: #{carriage.class}"
+  end
+
+  def total_num_carriages(train)
+    puts "Total number of carriages: #{train.total_number_carriages}"
   end
 end

@@ -169,7 +169,7 @@ class Interface
   end
 
   def train_type(train)
-    puts "Train type: #{train.train_type}"
+    puts "Train type: #{train.class}"
   end
 
   def train_carriages(train)

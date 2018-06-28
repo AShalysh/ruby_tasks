@@ -454,6 +454,7 @@ class MainInterface
       station.trains.each do |train|
         @interface.train_name(train)
         @interface.total_num_carriages(train)
+        @interface.train_type(train)
       end
     end
   end

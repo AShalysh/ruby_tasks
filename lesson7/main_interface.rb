@@ -395,7 +395,7 @@ class MainInterface
       chosen_carriage.total_quantity
       @interface.free_seats
       chosen_carriage.free_seats_number
-      book_seat
+      book_seat(chosen_carriage)
       @interface.free_seats
       chosen_carriage.free_seats_number
       @interface.booked_seats
@@ -409,12 +409,12 @@ class MainInterface
         chosen_carriage.free_volume_number
         given_volume = @interface.book_volume_question.to_i
         break if given_volume == 0
-        book_volume(given_volume)
+        book_volume(given_volume, chosen_carriage)
       end
     end
   end
 
-  def book_seat
+  def book_seat(chosen_carriage)
     loop do
       choice = @interface.book_seat_question.capitalize
       break if choice == "Stop"
@@ -432,7 +432,7 @@ class MainInterface
     end
   end
 
-  def book_volume(given_volume)
+  def book_volume(given_volume, chosen_carriage)
     if given_volume <= chosen_carriage.free_volume_number
       chosen_carriage.book_volume(given_volume)
       @interface.volume_is_booked
@@ -440,6 +440,8 @@ class MainInterface
       chosen_carriage.free_volume_number
       @interface.booked_volume
       chosen_carriage.booked_volume_number
+    elsif chosen_carriage.free_volume_number == 0
+      @interface.no_volume_left
     else
       @interface.left_volume_num
       chosen_carriage.free_volume_number

@@ -477,6 +477,10 @@ class Interface
     puts "There are no free seats left."
   end
 
+  def no_volume_left
+    puts "There is no free volume left."
+  end
+
   def left_volume_num
     puts "Number of volume left: "
   end

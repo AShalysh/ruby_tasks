@@ -10,7 +10,6 @@ class Carriage
   end
 
   def total_quantity
-    puts @quantity + @booked_quantity
-    @quantity + @booked_quantity
+    @quantity
   end
 end

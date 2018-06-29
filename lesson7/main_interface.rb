@@ -179,15 +179,11 @@ class MainInterface
 
   def if_cargo_or_pass_carriage_info(carriage)
     if carriage.is_a?(CargoCarriage)
-      @interface.free_volume
-      carriage.free_volume_number
-      @interface.booked_volume
-      carriage.booked_volume_number
+      @interface.free_volume(carriage)
+      @interface.booked_volume(carriage)
     else
-      @interface.free_seats
-      carriage.free_seats_number
-      @interface.booked_seats
-      carriage.booked_seats_number
+      @interface.free_seats(carriage)
+      @interface.booked_seats(carriage)
     end
   end
 #---------------Routes----------
@@ -391,22 +387,16 @@ class MainInterface
     chosen_carriage = chosen_train.get_carriage_by_num(carriage_num)
     #logic for passenger train
     if chosen_train.is_a?(PassengerTrain)
-      @interface.total_seat_number
-      chosen_carriage.total_quantity
-      @interface.free_seats
-      chosen_carriage.free_seats_number
+      @interface.total_seat_number(chosen_carriage)
+      @interface.free_seats(chosen_carriage)
       book_seat(chosen_carriage)
-      @interface.free_seats
-      chosen_carriage.free_seats_number
-      @interface.booked_seats
-      chosen_carriage.booked_seats_number 
+      @interface.free_seats(chosen_carriage)
+      @interface.booked_seats(chosen_carriage) 
     else
       #logic for cargo train
       loop do
-        @interface.total_volume_number
-        chosen_carriage.total_quantity
-        @interface.free_volume
-        chosen_carriage.free_volume_number
+        @interface.total_volume_number(chosen_carriage)
+        @interface.free_volume(chosen_carriage)
         given_volume = @interface.book_volume_question.to_i
         break if given_volume == 0
         book_volume(given_volume, chosen_carriage)
@@ -421,10 +411,8 @@ class MainInterface
       if chosen_carriage.free_seats_number > 0
         chosen_carriage.book_seat
         @interface.seat_is_booked
-        @interface.free_seats
-        chosen_carriage.free_seats_number
-        @interface.booked_seats
-        chosen_carriage.booked_seats_number
+        @interface.free_seats(chosen_carriage)
+        @interface.booked_seats(chosen_carriage)
       else
         @interface.no_seats_left
         break
@@ -436,15 +424,12 @@ class MainInterface
     if given_volume <= chosen_carriage.free_volume_number
       chosen_carriage.book_volume(given_volume)
       @interface.volume_is_booked
-      @interface.free_volume
-      chosen_carriage.free_volume_number
-      @interface.booked_volume
-      chosen_carriage.booked_volume_number
+      @interface.free_volume(chosen_carriage)
+      @interface.booked_volume(chosen_carriage)
     elsif chosen_carriage.free_volume_number == 0
       @interface.no_volume_left
     else
-      @interface.left_volume_num
-      chosen_carriage.free_volume_number
+      @interface.left_volume_num(chosen_carriage)
     end
   end
 #--when "7"

@@ -419,12 +419,12 @@ class Interface
     puts "Carriage type doesn't exist."
   end
 
-  def total_seat_number
-    puts "Total number of seats:"
+  def total_seat_number(chosen_carriage)
+    puts "Total number of seats: #{chosen_carriage.total_quantity}"
   end
 
-  def total_volume_number
-    puts "Total volume:"
+  def total_volume_number(chosen_carriage)
+    puts "Total volume: #{chosen_carriage.total_quantity}"
   end
 
   def show_quantity
@@ -449,20 +449,20 @@ class Interface
     puts "Provide volume(number) to book or type 0(zero) to exit: "
   end
 
-  def free_seats
-    puts "Free seats:"
+  def free_seats(chosen_carriage)
+    puts "Free seats: #{chosen_carriage.free_seats_number}"
   end
 
-  def free_volume
-    puts "Free volume:"
+  def free_volume(chosen_carriage)
+    puts "Free volume: #{chosen_carriage.free_volume_number}"
   end
 
-  def booked_seats
-    puts "Booked seats:"
+  def booked_seats(chosen_carriage)
+    puts "Booked seats: #{chosen_carriage.booked_seats_number}"
   end
 
-  def booked_volume
-    puts "Booked volume:"
+  def booked_volume(chosen_carriage)
+    puts "Booked volume: #{chosen_carriage.booked_volume_number}"
   end
 
   def seat_is_booked
@@ -481,8 +481,8 @@ class Interface
     puts "There is no free volume left."
   end
 
-  def left_volume_num
-    puts "Number of volume left: "
+  def left_volume_num(chosen_carriage)
+    puts "Number of volume left: #{chosen_carriage.free_volume_number}"
   end
 
   def carriage_number(carriage)

@@ -420,11 +420,11 @@ class Interface
   end
 
   def total_seat_number(chosen_carriage)
-    puts "Total number of seats: #{chosen_carriage.total_quantity}"
+    puts "Total number of seats: #{chosen_carriage.quantity}"
   end
 
   def total_volume_number(chosen_carriage)
-    puts "Total volume: #{chosen_carriage.total_quantity}"
+    puts "Total volume: #{chosen_carriage.quantity}"
   end
 
   def show_quantity
@@ -450,19 +450,19 @@ class Interface
   end
 
   def free_seats(chosen_carriage)
-    puts "Free seats: #{chosen_carriage.free_seats_number}"
+    puts "Free seats: #{chosen_carriage.free_quantity_number}"
   end
 
   def free_volume(chosen_carriage)
-    puts "Free volume: #{chosen_carriage.free_volume_number}"
+    puts "Free volume: #{chosen_carriage.free_quantity_number}"
   end
 
   def booked_seats(chosen_carriage)
-    puts "Booked seats: #{chosen_carriage.booked_seats_number}"
+    puts "Booked seats: #{chosen_carriage.booked_quantity}"
   end
 
   def booked_volume(chosen_carriage)
-    puts "Booked volume: #{chosen_carriage.booked_volume_number}"
+    puts "Booked volume: #{chosen_carriage.booked_quantity}"
   end
 
   def seat_is_booked

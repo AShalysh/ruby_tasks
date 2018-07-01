@@ -408,7 +408,7 @@ class MainInterface
     loop do
       choice = @interface.book_seat_question.capitalize
       break if choice == "Stop"
-      if chosen_carriage.free_seats_number > 0
+      if chosen_carriage.free_quantity_number > 0
         chosen_carriage.book_seat
         @interface.seat_is_booked
         @interface.free_seats(chosen_carriage)
@@ -421,12 +421,12 @@ class MainInterface
   end
 
   def book_volume(given_volume, chosen_carriage)
-    if given_volume <= chosen_carriage.free_volume_number
+    if given_volume <= chosen_carriage.free_quantity_number
       chosen_carriage.book_volume(given_volume)
       @interface.volume_is_booked
       @interface.free_volume(chosen_carriage)
       @interface.booked_volume(chosen_carriage)
-    elsif chosen_carriage.free_volume_number == 0
+    elsif chosen_carriage.free_quantity_number == 0
       @interface.no_volume_left
     else
       @interface.left_volume_num(chosen_carriage)

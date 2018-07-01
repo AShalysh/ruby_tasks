@@ -1,6 +1,6 @@
 class Carriage
   include Company
-  attr_reader :quantity, :carriage_number
+  attr_reader :quantity, :carriage_number, :booked_quantity
 
   def initialize(quantity, carriage_number, interface)
     @quantity = quantity
@@ -9,7 +9,7 @@ class Carriage
     @carriage_number = carriage_number
   end
 
-  def total_quantity
-    @quantity
+  def free_quantity_number
+    @quantity - @booked_quantity
   end
 end

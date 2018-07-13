@@ -125,7 +125,7 @@ class MainInterface
         break if station_name == 'Stop'
         attempt += 1
         create_station(station_name)
-      rescue Exception => e
+      rescue StandardError => e
         @interface.print_exception(e)
         retry if attempt < 3
       ensure
@@ -211,27 +211,31 @@ class MainInterface
     if @all_stations.empty?
       @interface.if_all_stations_empty
     else
-      loop do
-        attempt = 0
-        begin
-          route_name = @interface.user_given_route_name.capitalize
-          break if route_name == 'Stop'
-          attempt += 1
-          first_station_name = @interface.user_given_first_station_name.capitalize
-          break if first_station_name == 'Stop'
-          first_station = Station.get_station_by_name(@all_stations, first_station_name)
-          @interface.station_not_found_messsage if first_station.nil?
-          last_station_name = @interface.user_given_last_station_name.capitalize
-          break if last_station_name == 'Stop'
-          last_station = Station.get_station_by_name(@all_stations, last_station_name)
-          @interface.station_not_found_messsage if last_station.nil?
-          create_route(route_name, first_station, last_station)
-        rescue Exception => e
-          @interface.print_exception(e)
-          retry if attempt < 3
-        ensure
-          @interface.attempt_number(attempt)
-        end
+      create_routes_loop
+    end
+  end
+
+  def create_routes_loop
+    loop do
+      attempt = 0
+      begin
+        route_name = @interface.user_given_route_name.capitalize
+        break if route_name == 'Stop'
+        attempt += 1
+        first_station_name = @interface.user_given_first_station_name.capitalize
+        break if first_station_name == 'Stop'
+        first_station = Station.get_station_by_name(@all_stations, first_station_name)
+        @interface.station_not_found_messsage if first_station.nil?
+        last_station_name = @interface.user_given_last_station_name.capitalize
+        break if last_station_name == 'Stop'
+        last_station = Station.get_station_by_name(@all_stations, last_station_name)
+        @interface.station_not_found_messsage if last_station.nil?
+        create_route(route_name, first_station, last_station)
+      rescue StandardError => e
+        @interface.print_exception(e)
+        retry if attempt < 3
+      ensure
+        @interface.attempt_number(attempt)
       end
     end
   end
@@ -313,7 +317,7 @@ class MainInterface
         attempt += 1
         train_type = @interface.user_given_train_type
         create_train(train_name, train_type)
-      rescue Exception => e
+      rescue StandardError => e
         @interface.print_exception(e)
         retry if attempt < 3
       ensure
@@ -505,22 +509,26 @@ class MainInterface
         carriage_type = @interface.user_given_carriage_type
         carriage_number = @interface.user_given_carriage_number
         break if carriage_type.casecmp('stop').zero?
-        create_carriage(chosen_train, carriage_type, carriage_number)
+        new_carriage = create_pass_or_cargo(carriage_type, carriage_number)
+        add_new_carriage(new_carriage, chosen_train)
       end
     end
   end
 
-  def create_carriage(chosen_train, carriage_type, carriage_number)
-    new_carriage = case carriage_type
-                   when 'pass'
-                     quantity = @interface.user_given_seat_num
-                     PassengerCarriage.new(quantity, carriage_number, @interface)
-                   when 'cargo'
-                     quantity = @interface.user_given_volume_num
-                     CargoCarriage.new(quantity, carriage_number, @interface)
-                   else
-                     @interface.type_not_exist
+  def create_pass_or_cargo(carriage_type, carriage_number)
+    case carriage_type
+    when 'pass'
+      quantity = @interface.user_given_seat_num
+      PassengerCarriage.new(quantity, carriage_number, @interface)
+    when 'cargo'
+      quantity = @interface.user_given_volume_num
+      CargoCarriage.new(quantity, carriage_number, @interface)
+    else
+      @interface.type_not_exist
     end
+  end
+
+  def add_new_carriage(new_carriage, chosen_train)
     @all_carriages << new_carriage
     new_carriage.company_name = 'RZD St.Peterburg'
     chosen_train.add_carriage(new_carriage)

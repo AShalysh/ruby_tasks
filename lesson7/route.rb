@@ -14,7 +14,7 @@ class Route
   end
 
   def self.display_all_routes(all_routes)
-    all_routes.each { |route| puts "#{route.name}" }
+    all_routes.each { |route| puts route.name.to_s }
   end
 
   def initialize(name, first_station, last_station, interface)
@@ -63,24 +63,25 @@ class Route
     if @station_list.empty?
       @interface.no_stations_message
     else
-      @station_list.each { |station| puts "#{station.name}" }
+      @station_list.each { |station| puts station.name.to_s }
     end
   end
 
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
   protected
+
   def validate!
     raise "Name can't be nil" if name.nil?
     raise "Name should be at least 2 characters" if name.length < 2
     raise "Name has invalid format" if name !~ NAME_FORMAT
-    raise "First and Last station can not be the same or/and both must belong to class Station" if first_station == last_station
-    raise "First station is not an object of class Station" if !first_station.is_a?(Station)
-    raise "Last station is not an object of class Station" if !last_station.is_a?(Station)
+    raise "1st and Last st.cannt be thesame,must belong to cl.St" if first_station == last_station
+    raise "1st station isn't an obj.of cl.Station" unless first_station.is_a?(Station)
+    raise "Last station isn't an obj.of cl.Station" unless last_station.is_a?(Station)
   end
 end

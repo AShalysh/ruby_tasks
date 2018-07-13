@@ -10,7 +10,7 @@ class Station
   end
 
   def self.display_all_stations(all_stations)
-    all_stations.each { |station| puts "#{station.name}" }
+    all_stations.each { |station| puts station.name.to_s }
   end
 
   def self.get_station_by_name(all_stations, station_name)
@@ -51,13 +51,14 @@ class Station
   end
 
   def display_all_trains
-    @trains.each { |train| puts "#{train.num}" }
+    @trains.each { |train| puts train.num.to_s }
     @interface.no_trains_on_station if @trains.empty?
   end
+
   # -------block task---------
   def display_all_trains_by_block
     @interface.no_trains_on_station if @trains.empty?
-    @trains.each do |train| 
+    @trains.each do |train|
       yield(train)
     end
   end
@@ -67,18 +68,20 @@ class Station
       yield(station)
     end
   end
+
   #-----end of task ------
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
   protected
+
   def validate!
     raise "Name can't be nil" if name.nil?
-    raise "Name should be at least 2 characters" if name.length < 2
-    raise "Name has invalid format" if name !~ NAME_FORMAT
+    raise 'Name should be at least 2 characters' if name.length < 2
+    raise 'Name has invalid format' if name !~ NAME_FORMAT
   end
 end

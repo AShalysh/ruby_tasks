@@ -1,0 +1,19 @@
+AllCops:
+  Include:
+    - '*.rb'
+  DisplayCopNames: true
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 1000
+
+Style/StringLiterals:
+  Enabled: false

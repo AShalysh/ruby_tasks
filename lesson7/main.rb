@@ -12,7 +12,6 @@ require_relative 'cargo_carriage'
 require_relative 'interface'
 require_relative 'main_interface'
 
-
 interface = Interface.new
 main_interface = MainInterface.new(interface)
 main_interface.start

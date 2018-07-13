@@ -9,9 +9,9 @@ class Train
 
   def self.for(train_name, train_type, interface)
     case train_type
-    when "pass"
+    when 'pass'
       PassengerTrain.new(train_name, interface)
-    when "cargo"
+    when 'cargo'
       CargoTrain.new(train_name, interface)
     else
       raise TypeError, 'Type of train is incorrect'
@@ -22,7 +22,7 @@ class Train
     if all_trains.empty?
       @interface.no_trains_message
     else
-      all_trains.each { |train| puts "#{train.num}"}
+      all_trains.each { |train| puts train.num.to_s }
     end
   end
 
@@ -31,7 +31,7 @@ class Train
   end
 
   def self.get_train_by_name(all_trains, train_name)
-    all_trains.find { |train| train.num == train_name}
+    all_trains.find { |train| train.num == train_name }
   end
 
   def initialize(num, interface)
@@ -52,14 +52,14 @@ class Train
 
   def decrease_speed(value)
     if value > speed
-      @speed = 0
+      @speed.zero?
     else
       @speed -= value
     end
   end
 
   def add_carriage(carriage)
-    if @speed == 0
+    if @speed.zero?
       @carriages << carriage
       @interface.carriage_added
     else
@@ -73,7 +73,7 @@ class Train
   end
 
   def remove_carriage(carriage_position)
-    if @speed == 0
+    if @speed.zero?
       @carriages.delete_at(carriage_position - 1)
       @interface.carriage_removed
     else
@@ -109,7 +109,7 @@ class Train
       @interface.on_last_station
     end
   end
- 
+
   def go_to_prev_station
     if not_first_station
       set_departure
@@ -139,30 +139,31 @@ class Train
   def get_carriage_by_num(carriage_num)
     @carriages[carriage_num - 1]
   end
-   # -------block task---------
+
+  # -------block task---------
   def display_all_carriages_by_block
-    @carriages.each do |carriage| 
+    @carriages.each do |carriage|
       yield(carriage)
     end
   end
-    # for element in @carriages
-    #   yield element
-    # end
+
   #-----end of task ------
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
   protected
-# я вынесла эти методы в область protected поскольку они - внутренние методы, не надо чтоб были доступны из вне класса, а вызывались внутри класса. 
-# Эти методы не будут вызываться из клиенского кода. Выбрала протектед поскольку есть дети. 
+
+  # These methods are in protected because they are inner methords,
+  # no need them to be acessable from outside of the class.They are called from the inside of class
+  # I chose protected because they are child classes.
   def validate!
     raise "Number can't be nil" if num.nil?
-    raise "Number should be at least 5 symbols" if num.length < 5
-    raise "Number has invalid format" if num !~ NUMBER_FORMAT
+    raise 'Number should be at least 5 symbols' if num.length < 5
+    raise 'Number has invalid format' if num !~ NUMBER_FORMAT
   end
 
   def set_arrival

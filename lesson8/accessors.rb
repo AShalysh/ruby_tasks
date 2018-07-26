@@ -1,19 +1,21 @@
 module Accessors
   def attr_accessor_with_history(*names)
+    attr_reader_without_history(*names)
     names.each do |name|
       var_name = "@#{name}".to_sym
       var_history_name = "@#{name}_history".to_sym
-      instance_variable_set(var_history_name, [])
+      puts "******* 1 self: #{self}"
       define_method("#{name}=".to_sym) do |value|
         instance_variable_set(var_name, value)
+        puts "******* 2 self: #{self}"
         history_array = instance_variable_get(var_history_name)
+        history_array = [] if history_array.nil? 
         history_array << value
         instance_variable_set(var_history_name, history_array)
       end
       define_method(name) { instance_variable_get(var_name) }
-      attr_reader_without_history("@#{name}_history")
+      attr_reader_without_history("#{name}_history")
     end
-    attr_reader_without_history(*names)
   end
 
   def attr_reader_without_history(*names)
@@ -31,7 +33,7 @@ module Accessors
         if name.is_a?(attr_class)
           instance_variable_set(var_name, value)
         else
-          puts "Wrong class."
+          raise "Wrong class."
         end
       end
     end

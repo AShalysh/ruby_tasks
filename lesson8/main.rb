@@ -1,6 +1,7 @@
 require 'pry-nav'
 require_relative 'company'
 require_relative 'accessors'
+require_relative 'validation'
 require_relative 'instance_counter'
 require_relative 'station'
 require_relative 'route'

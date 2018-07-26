@@ -1,9 +1,15 @@
 class Train
   include InstanceCounter
   include Company
+  
   extend Accessors
+  extend Validation
   #attr_reader :num, :speed, :route, :carriages, :train_type
   attr_accessor_with_history :num, :speed, :route, :carriages, :train_type
+
+  validate :name, :presence
+  validate :name, :format, /A-Z/
+  validate :name, :type, String
 
   @@all_created_trains = []
   @@all_created_trains_hash = {}

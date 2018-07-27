@@ -1,9 +1,13 @@
 class Station
   include InstanceCounter
+  include Validation
   attr_reader :name, :trains
 
   @@all_created_stations = []
   NAME_FORMAT = /^[a-z0-9]{2,}$/i
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
+  validate :name, :type, String
 
   def self.all
     @@all_created_stations
@@ -68,20 +72,19 @@ class Station
       yield(station)
     end
   end
-
   #-----end of task ------
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
-  protected
+  # protected
 
-  def validate!
-    raise "Name can't be nil" if name.nil?
-    raise 'Name should be at least 2 characters' if name.length < 2
-    raise 'Name has invalid format' if name !~ NAME_FORMAT
-  end
+  # def validate!
+  #   raise "Name can't be nil" if name.nil?
+  #   raise 'Name should be at least 2 characters' if name.length < 2
+  #   raise 'Name has invalid format' if name !~ NAME_FORMAT
+  # end
 end

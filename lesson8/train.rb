@@ -1,20 +1,14 @@
 class Train
   include InstanceCounter
   include Company
-  
   extend Accessors
-  extend Validation
+  include Validation
   #attr_reader :num, :speed, :route, :carriages, :train_type
   attr_accessor_with_history :num, :speed, :route, :carriages, :train_type
 
-  validate :name, :presence
-  validate :name, :format, /A-Z/
-  validate :name, :type, String
-
   @@all_created_trains = []
   @@all_created_trains_hash = {}
-  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
-
+  
   def self.for(train_name, train_type, interface)
     case train_type
     when 'pass'
@@ -160,23 +154,23 @@ class Train
   end
 
   #-----end of task ------
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
-  protected
+  # protected
 
-  # These methods are in protected because they are inner methords,
-  # no need them to be acessable from outside of the class.They are called from the inside of class
-  # I chose protected because they are child classes.
-  def validate!
-    raise "Number can't be nil" if num.nil?
-    raise 'Number should be at least 5 symbols' if num.length < 5
-    raise 'Number has invalid format' if num !~ NUMBER_FORMAT
-  end
+  # # These methods are in protected because they are inner methords,
+  # # no need them to be acessable from outside of the class.They are called from the inside of class
+  # # I chose protected because they are child classes.
+  # def validate!
+  #   raise "Number can't be nil" if num.nil?
+  #   raise 'Number should be at least 5 symbols' if num.length < 5
+  #   raise 'Number has invalid format' if num !~ NUMBER_FORMAT
+  # end
 
   def set_arrival
     current_station.arrival(self)

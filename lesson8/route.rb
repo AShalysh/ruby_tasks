@@ -1,9 +1,13 @@
 class Route
   include InstanceCounter
+  include Validation
   attr_reader :station_list, :name
 
   @@all_created_routes = []
   NAME_FORMAT = /^[a-z0-9]{2,}$/i
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
+  validate :name, :type, String
 
   def self.all
     @@all_created_routes
@@ -67,21 +71,21 @@ class Route
     end
   end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
-  end
+  # def valid?
+  #   validate!
+  #   true
+  # rescue StandardError
+  #   false
+  # end
 
-  protected
+  # protected
 
-  def validate!
-    raise "Name can't be nil" if name.nil?
-    raise "Name should be at least 2 characters" if name.length < 2
-    raise "Name has invalid format" if name !~ NAME_FORMAT
-    raise "1st and Last st.cannt be thesame,must belong to cl.St" if first_station == last_station
-    raise "1st station isn't an obj.of cl.Station" unless first_station.is_a?(Station)
-    raise "Last station isn't an obj.of cl.Station" unless last_station.is_a?(Station)
-  end
+  # def validate!
+  #   raise "Name can't be nil" if name.nil?
+  #   raise "Name should be at least 2 characters" if name.length < 2
+  #   raise "Name has invalid format" if name !~ NAME_FORMAT
+  #   raise "1st and Last st.cannt be thesame,must belong to cl.St" if first_station == last_station
+  #   raise "1st station isn't an obj.of cl.Station" unless first_station.is_a?(Station)
+  #   raise "Last station isn't an obj.of cl.Station" unless last_station.is_a?(Station)
+  # end
 end
